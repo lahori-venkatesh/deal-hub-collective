@@ -10,12 +10,14 @@ interface DealCardProps {
   deal: Deal;
   compact?: boolean;
   className?: string;
+  style?: React.CSSProperties;
 }
 
 const DealCard: React.FC<DealCardProps> = ({
   deal,
   compact = false,
   className,
+  style,
 }) => {
   return (
     <Link 
@@ -25,6 +27,7 @@ const DealCard: React.FC<DealCardProps> = ({
         compact ? "h-full" : "",
         className
       )}
+      style={style}
     >
       <div className="relative">
         <div className="aspect-[5/3] bg-muted overflow-hidden">
