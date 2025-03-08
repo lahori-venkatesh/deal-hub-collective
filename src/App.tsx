@@ -10,6 +10,7 @@ import AddDeal from "./pages/AddDeal";
 import Profile from "./pages/Profile";
 import Notifications from "./pages/Notifications";
 import NotFound from "./pages/NotFound";
+import Explore from "./pages/Explore";
 
 const queryClient = new QueryClient();
 
@@ -25,8 +26,8 @@ const App = () => (
           <Route path="/add-deal" element={<AddDeal />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/notifications" element={<Notifications />} />
+          <Route path="/explore" element={<Explore />} />
           {/* Future pages to be added */}
-          <Route path="/explore" element={<Home />} />
           <Route path="/saved-deals" element={<Home />} />
           <Route path="/my-deals" element={<Home />} />
           <Route path="/achievements" element={<Home />} />
