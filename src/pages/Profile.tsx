@@ -8,14 +8,14 @@ import {
   Gift, 
   Bookmark,
   LogOut,
-  ThumbsUp,
   Tag,
-  User as UserIcon
 } from 'lucide-react';
+import { toast } from "sonner";
 import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
 import UserAvatar from '@/components/ui/UserAvatar';
 import PointsBadge from '@/components/ui/PointsBadge';
+import { Button } from '@/components/ui/button';
 import { currentUser } from '@/utils/mockData';
 import { cn } from '@/lib/utils';
 
@@ -55,6 +55,17 @@ const Profile: React.FC = () => {
       path: '/settings',
     },
   ];
+
+  const handleUpgradePremium = () => {
+    toast.success("Your premium upgrade will be available soon!");
+  };
+  
+  const handleLogout = () => {
+    // In a real app, this would clear authentication state
+    toast.success("You have been logged out successfully");
+    // Redirect to home after logout
+    setTimeout(() => navigate('/'), 1500);
+  };
   
   return (
     <div className="min-h-screen bg-background pb-16">
@@ -65,6 +76,7 @@ const Profile: React.FC = () => {
           <button 
             onClick={() => navigate(-1)}
             className="p-2 -ml-2 text-foreground/80 hover:text-foreground"
+            aria-label="Go back"
           >
             <ArrowLeft size={20} />
           </button>
@@ -118,9 +130,13 @@ const Profile: React.FC = () => {
                     Unlock exclusive deals and remove ads for $2.99/month
                   </div>
                 </div>
-                <button className="px-3 py-1.5 bg-primary text-primary-foreground text-sm rounded-lg">
+                <Button 
+                  size="sm" 
+                  onClick={handleUpgradePremium}
+                  className="animate-pulse-subtle"
+                >
                   Upgrade
-                </button>
+                </Button>
               </div>
             </div>
           )}
@@ -157,6 +173,7 @@ const Profile: React.FC = () => {
           <button
             className="w-full flex items-center py-4 px-4 rounded-lg text-destructive hover:bg-destructive/5 transition-colors mt-8 animate-slide-up"
             style={{ animationDelay: "400ms" }}
+            onClick={handleLogout}
           >
             <div className="p-2 rounded-full bg-destructive/10 text-destructive mr-4">
               <LogOut size={18} />
