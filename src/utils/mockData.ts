@@ -1,4 +1,3 @@
-
 export interface Deal {
   id: string;
   title: string;
@@ -34,18 +33,20 @@ export interface User {
   dealsVerified: number;
   joined: string;
   isPremium: boolean;
+  location?: string; // Added location field
 }
 
-// Current mock user
+// Current mock user - Updated with Indian name and location
 export const currentUser: User = {
   id: "u1",
-  name: "Alex Johnson",
+  name: "Arjun Sharma",
   avatar: "https://i.pravatar.cc/150?img=11",
   points: 345,
   dealsPosted: 12,
   dealsVerified: 28,
   joined: "2023-09-15",
   isPremium: false,
+  location: "Mumbai, Maharashtra"
 };
 
 // Mock deals data

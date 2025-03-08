@@ -1,70 +1,65 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
   ArrowLeft, 
-  Settings, 
   Award, 
-  Gift, 
-  Bookmark,
+  MapPin, 
+  Calendar, 
   LogOut,
-  Tag,
+  CrownIcon,
+  CheckCircle2
 } from 'lucide-react';
-import { toast } from "sonner";
+import { useToast } from '@/components/ui/use-toast';
+import { toast } from 'sonner';
 import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
 import UserAvatar from '@/components/ui/UserAvatar';
 import PointsBadge from '@/components/ui/PointsBadge';
-import { Button } from '@/components/ui/button';
-import { currentUser } from '@/utils/mockData';
-import { cn } from '@/lib/utils';
+import { mockDeals, currentUser } from '@/utils/mockData';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
+  const { toast: shadowToast } = useToast();
+  const [isPremium, setIsPremium] = useState(currentUser.isPremium);
   
-  const menuItems = [
-    {
-      icon: Bookmark,
-      label: 'Saved Deals',
-      description: '10 deals saved for later',
-      path: '/saved-deals',
-    },
-    {
-      icon: Tag,
-      label: 'My Deals',
-      description: `${currentUser.dealsPosted} deals posted`,
-      path: '/my-deals',
-    },
-    {
-      icon: Award,
-      label: 'My Achievements',
-      description: '3 badges earned so far',
-      path: '/achievements',
-    },
-    {
-      icon: Gift,
-      label: 'Rewards',
-      description: 'Redeem your points for gift cards',
-      path: '/rewards',
-      highlight: true,
-    },
-    {
-      icon: Settings,
-      label: 'Settings',
-      description: 'Notifications, privacy, and more',
-      path: '/settings',
-    },
-  ];
-
-  const handleUpgradePremium = () => {
-    toast.success("Your premium upgrade will be available soon!");
+  // Update user with Indian name and location
+  const user = {
+    ...currentUser,
+    name: "Arjun Sharma",
+    location: "Mumbai, Maharashtra"
   };
   
+  // Calculate statistics
+  const dealsPosted = mockDeals.filter(deal => deal.postedBy.id === user.id).length;
+  const joinDate = new Date(user.joined);
+  const formattedJoinDate = joinDate.toLocaleDateString('en-IN', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  });
+  
+  // Convert points to Indian Rupees (just for display)
+  const pointsInRupees = user.points * 10; // Assuming 1 point = ₹10
+  
   const handleLogout = () => {
-    // In a real app, this would clear authentication state
-    toast.success("You have been logged out successfully");
-    // Redirect to home after logout
-    setTimeout(() => navigate('/'), 1500);
+    shadowToast({
+      title: "Logged out successfully",
+      description: "You have been logged out of your account.",
+    });
+    
+    // In a real app, we would clear the authentication state
+    setTimeout(() => {
+      navigate('/');
+    }, 1500);
+  };
+  
+  const handleUpgrade = () => {
+    setIsPremium(true);
+    toast.success("Upgraded to premium successfully!", {
+      description: "You now have access to exclusive deals and features.",
+      icon: <CrownIcon className="text-yellow-500" />,
+    });
   };
   
   return (
@@ -76,111 +71,105 @@ const Profile: React.FC = () => {
           <button 
             onClick={() => navigate(-1)}
             className="p-2 -ml-2 text-foreground/80 hover:text-foreground"
-            aria-label="Go back"
           >
             <ArrowLeft size={20} />
           </button>
           <h1 className="text-2xl font-bold ml-2">Profile</h1>
         </div>
         
-        {/* Profile header */}
-        <div className="bg-gradient-to-br from-primary/10 to-primary/5 rounded-xl p-6 mb-6 animate-scale-in">
-          <div className="flex items-center">
-            <UserAvatar 
-              src={currentUser.avatar} 
-              alt={currentUser.name} 
-              size="lg"
-              className="border-4 border-background"
-            />
+        {/* User Profile Card */}
+        <div className="bg-card rounded-xl overflow-hidden border shadow-soft mb-6 animate-fade-in">
+          <div className="bg-primary/10 px-6 py-8 flex flex-col items-center">
+            <UserAvatar src={user.avatar} alt={user.name} size="xl" />
+            <h2 className="text-xl font-bold mt-3">{user.name}</h2>
             
-            <div className="ml-4">
-              <h2 className="text-xl font-bold">{currentUser.name}</h2>
-              <div className="flex items-center mt-1">
-                <PointsBadge points={currentUser.points} />
-                <span className="text-xs text-muted-foreground ml-2">
-                  Member since {new Date(currentUser.joined).toLocaleDateString()}
+            {/* Location */}
+            <div className="flex items-center text-sm text-muted-foreground mt-1">
+              <MapPin size={14} className="mr-1" />
+              <span>{user.location}</span>
+            </div>
+            
+            <div className="mt-2 flex items-center gap-2">
+              <PointsBadge points={user.points} />
+              {isPremium && (
+                <span className="bg-amber-100 text-amber-700 text-xs px-2 py-1 rounded-full flex items-center">
+                  <CrownIcon size={12} className="mr-1" />
+                  Premium
                 </span>
-              </div>
+              )}
             </div>
           </div>
           
-          <div className="grid grid-cols-3 gap-4 mt-6">
-            <div className="bg-background/60 backdrop-blur-sm rounded-lg p-3 flex flex-col items-center">
-              <div className="text-xl font-bold text-primary">{currentUser.dealsPosted}</div>
-              <div className="text-xs text-muted-foreground text-center">Deals Posted</div>
-            </div>
-            
-            <div className="bg-background/60 backdrop-blur-sm rounded-lg p-3 flex flex-col items-center">
-              <div className="text-xl font-bold text-primary">{currentUser.dealsVerified}</div>
-              <div className="text-xs text-muted-foreground text-center">Deals Verified</div>
-            </div>
-            
-            <div className="bg-background/60 backdrop-blur-sm rounded-lg p-3 flex flex-col items-center">
-              <div className="text-xl font-bold text-primary">3</div>
-              <div className="text-xs text-muted-foreground text-center">Badges Earned</div>
-            </div>
-          </div>
-          
-          {!currentUser.isPremium && (
-            <div className="mt-6 bg-background/60 backdrop-blur-sm rounded-lg p-4 border border-primary/20">
-              <div className="flex justify-between items-center">
-                <div>
-                  <div className="text-sm font-semibold mb-1">Upgrade to Premium</div>
-                  <div className="text-xs text-muted-foreground">
-                    Unlock exclusive deals and remove ads for $2.99/month
-                  </div>
-                </div>
-                <Button 
-                  size="sm" 
-                  onClick={handleUpgradePremium}
-                  className="animate-pulse-subtle"
-                >
-                  Upgrade
-                </Button>
+          <div className="p-6">
+            <div className="grid grid-cols-2 gap-4 mb-6">
+              <div className="bg-muted/50 rounded-lg p-4 text-center">
+                <div className="text-2xl font-bold text-primary">₹{pointsInRupees}</div>
+                <div className="text-sm text-muted-foreground">Value Earned</div>
+              </div>
+              <div className="bg-muted/50 rounded-lg p-4 text-center">
+                <div className="text-2xl font-bold">{dealsPosted}</div>
+                <div className="text-sm text-muted-foreground">Deals Posted</div>
               </div>
             </div>
-          )}
+            
+            <div className="space-y-3">
+              <div className="flex items-center text-sm">
+                <Calendar size={16} className="mr-3 text-muted-foreground" />
+                <span>Joined {formattedJoinDate}</span>
+              </div>
+              <div className="flex items-center text-sm">
+                <Award size={16} className="mr-3 text-muted-foreground" />
+                <span>Level 2 Deal Hunter</span>
+              </div>
+            </div>
+          </div>
         </div>
         
-        {/* Menu items */}
-        <div className="space-y-2 animate-slide-up">
-          {menuItems.map((item, index) => (
-            <button
-              key={item.path}
-              className={cn(
-                "w-full flex items-center py-4 px-4 rounded-lg hover:bg-muted/70 transition-colors",
-                item.highlight && "bg-primary/5 border border-primary/20"
-              )}
-              style={{ animationDelay: `${50 + (index * 50)}ms` }}
-              onClick={() => navigate(item.path)}
-            >
-              <div className={cn(
-                "p-2 rounded-full mr-4",
-                item.highlight ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-              )}>
-                <item.icon size={18} />
-              </div>
-              <div className="flex-1 text-left">
-                <div className="font-medium">{item.label}</div>
-                <div className="text-xs text-muted-foreground">{item.description}</div>
-              </div>
-              <div className="text-muted-foreground">
-                <ArrowLeft size={16} className="rotate-180" />
-              </div>
-            </button>
-          ))}
+        {/* Action Buttons */}
+        <div className="grid grid-cols-1 gap-4 mb-6 animate-slide-up" style={{ animationDelay: "100ms" }}>
+          <button
+            onClick={() => navigate('/my-deals')}
+            className="bg-card hover:bg-muted/50 border rounded-lg p-4 flex justify-between items-center transition-colors"
+          >
+            <span className="font-medium">My Deals</span>
+            <span className="text-muted-foreground">{dealsPosted}</span>
+          </button>
           
           <button
-            className="w-full flex items-center py-4 px-4 rounded-lg text-destructive hover:bg-destructive/5 transition-colors mt-8 animate-slide-up"
-            style={{ animationDelay: "400ms" }}
-            onClick={handleLogout}
+            onClick={() => navigate('/saved-deals')}
+            className="bg-card hover:bg-muted/50 border rounded-lg p-4 flex justify-between items-center transition-colors"
           >
-            <div className="p-2 rounded-full bg-destructive/10 text-destructive mr-4">
-              <LogOut size={18} />
+            <span className="font-medium">Saved Deals</span>
+            <span className="text-muted-foreground">3</span>
+          </button>
+          
+          {!isPremium ? (
+            <button
+              onClick={handleUpgrade}
+              className="bg-amber-100 hover:bg-amber-200 text-amber-800 rounded-lg p-4 flex justify-between items-center transition-colors"
+            >
+              <div className="flex items-center">
+                <CrownIcon size={18} className="mr-2" />
+                <span className="font-medium">Upgrade to Premium</span>
+              </div>
+              <span>₹499/year</span>
+            </button>
+          ) : (
+            <div className="bg-amber-50 text-amber-800 rounded-lg p-4 flex justify-between items-center">
+              <div className="flex items-center">
+                <CheckCircle2 size={18} className="mr-2" />
+                <span className="font-medium">Premium Member</span>
+              </div>
+              <span className="text-xs text-muted-foreground">Expires in 364 days</span>
             </div>
-            <div className="flex-1 text-left">
-              <div className="font-medium">Log Out</div>
-            </div>
+          )}
+          
+          <button
+            onClick={handleLogout}
+            className="bg-destructive/10 hover:bg-destructive/20 text-destructive rounded-lg p-4 flex items-center justify-center transition-colors mt-4"
+          >
+            <LogOut size={18} className="mr-2" />
+            <span className="font-medium">Log Out</span>
           </button>
         </div>
       </main>
