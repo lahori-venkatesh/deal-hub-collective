@@ -1,7 +1,8 @@
 
 import React, { useState } from 'react';
 import { Search, Map as MapIcon, List, X, Filter } from 'lucide-react';
-import { mockDeals, Deal } from '@/utils/mockData';
+import { Deal } from '@/utils/types';
+import { mockDeals } from '@/utils/dealsData';
 import { cn } from '@/lib/utils';
 
 interface MapViewProps {

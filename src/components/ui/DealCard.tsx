@@ -3,7 +3,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Clock, MapPin, ThumbsUp, Flag, ExternalLink } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Deal, formatTimeRemaining, getExpiryColor, formatDistanceToNow } from '@/utils/mockData';
+import { Deal } from '@/utils/types';
+import { formatTimeRemaining, getExpiryColor, formatDistanceToNow } from '@/utils/utils';
 import UserAvatar from './UserAvatar';
 
 interface DealCardProps {

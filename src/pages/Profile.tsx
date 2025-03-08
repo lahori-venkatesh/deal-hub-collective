@@ -16,7 +16,8 @@ import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
 import UserAvatar from '@/components/ui/UserAvatar';
 import PointsBadge from '@/components/ui/PointsBadge';
-import { mockDeals, currentUser } from '@/utils/mockData';
+import { mockDeals } from '@/utils/dealsData';
+import { currentUser } from '@/utils/userData';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
@@ -80,7 +81,7 @@ const Profile: React.FC = () => {
         {/* User Profile Card */}
         <div className="bg-card rounded-xl overflow-hidden border shadow-soft mb-6 animate-fade-in">
           <div className="bg-primary/10 px-6 py-8 flex flex-col items-center">
-            <UserAvatar src={user.avatar} alt={user.name} size="xl" />
+            <UserAvatar src={user.avatar} alt={user.name} size="lg" />
             <h2 className="text-xl font-bold mt-3">{user.name}</h2>
             
             {/* Location */}
