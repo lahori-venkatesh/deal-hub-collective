@@ -1,15 +1,16 @@
 
 import React, { useState } from 'react';
-import { ChevronRight, QrCode, GraduationCap, Users, Briefcase, Award, TrendingUp } from 'lucide-react';
+import { QrCode } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
-import MapView from '@/components/ui/MapView';
-import DealCard from '@/components/ui/DealCard';
 import AddDealButton from '@/components/ui/AddDealButton';
 import { mockDeals, dealCategories, currentUser } from '@/utils/mockData';
 import { Button } from '@/components/ui/button';
-import { Link } from 'react-router-dom';
-import CategoryCarousel from '@/components/ui/CategoryCarousel';
+import NearbyDealsSection from '@/components/home/NearbyDealsSection';
+import PersonalizedDealsSection from '@/components/home/PersonalizedDealsSection';
+import TrendingSection from '@/components/home/TrendingSection';
+import CategoriesSection from '@/components/home/CategoriesSection';
+import FeaturedDealsSection from '@/components/home/FeaturedDealsSection';
 
 const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Deals");
@@ -70,137 +71,33 @@ const Home: React.FC = () => {
           </p>
           
           {/* Map section - Moved to the top */}
-          <section className="mb-8 animate-slide-up" style={{ animationDelay: "100ms" }}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Nearby Deals</h2>
-              <button className="text-sm text-primary flex items-center hover:underline">
-                View all <ChevronRight size={16} />
-              </button>
-            </div>
-            
-            <MapView className="shadow-soft" />
-          </section>
+          <NearbyDealsSection />
           
           {/* Personalized Deals Section */}
-          <section className="mb-8 animate-slide-up" style={{ animationDelay: "150ms" }}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
-                <Award size={20} className="text-primary" />
-                {currentUser.category === "student" ? "Deals for Students" : 
-                 currentUser.category === "family" ? "Family Specials" : 
-                 currentUser.category === "professional" ? "Office Goer Specials" : 
-                 "Recommended for You"}
-              </h2>
-              <button className="text-sm text-primary flex items-center hover:underline">
-                View all <ChevronRight size={16} />
-              </button>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {getPersonalizedDeals().map((deal, index) => (
-                <DealCard
-                  key={deal.id}
-                  deal={deal}
-                  compact
-                  className="animate-slide-up"
-                  style={{ animationDelay: `${200 + index * 50}ms` }}
-                />
-              ))}
-            </div>
-          </section>
+          <PersonalizedDealsSection 
+            currentUser={currentUser}
+            deals={getPersonalizedDeals()}
+          />
           
           {/* Trending Sections */}
-          <section className="mb-8 animate-slide-up" style={{ animationDelay: "250ms" }}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold flex items-center gap-2">
-                <TrendingUp size={20} className="text-primary" />
-                <span>Trending Now</span>
-              </h2>
-            </div>
-            
-            {/* Students Love These */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center">
-                  <GraduationCap size={18} className="mr-2 text-primary" />
-                  <h3 className="font-medium">Students Love These</h3>
-                </div>
-                <Link to="/explore?category=student" className="text-sm text-primary flex items-center hover:underline">
-                  View all <ChevronRight size={16} />
-                </Link>
-              </div>
-              <CategoryCarousel deals={getStudentDeals()} />
-            </div>
-            
-            {/* Top Savings for Families */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center">
-                  <Users size={18} className="mr-2 text-primary" />
-                  <h3 className="font-medium">Top Savings for Families</h3>
-                </div>
-                <Link to="/explore?category=family" className="text-sm text-primary flex items-center hover:underline">
-                  View all <ChevronRight size={16} />
-                </Link>
-              </div>
-              <CategoryCarousel deals={getFamilyDeals()} />
-            </div>
-            
-            {/* Office Goer Specials */}
-            <div className="mb-8">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center">
-                  <Briefcase size={18} className="mr-2 text-primary" />
-                  <h3 className="font-medium">Office Goer Specials</h3>
-                </div>
-                <Link to="/explore?category=professional" className="text-sm text-primary flex items-center hover:underline">
-                  View all <ChevronRight size={16} />
-                </Link>
-              </div>
-              <CategoryCarousel deals={getProfessionalDeals()} />
-            </div>
-          </section>
+          <TrendingSection 
+            studentDeals={getStudentDeals()}
+            familyDeals={getFamilyDeals()}
+            professionalDeals={getProfessionalDeals()}
+          />
           
           {/* Categories */}
-          <section className="mb-6 animate-slide-up" style={{ animationDelay: "650ms" }}>
-            <div className="overflow-x-auto pb-2">
-              <div className="flex space-x-2">
-                {dealCategories.map((category) => (
-                  <button
-                    key={category}
-                    className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap transition-colors ${
-                      selectedCategory === category
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                    }`}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                  </button>
-                ))}
-              </div>
-            </div>
-          </section>
+          <CategoriesSection 
+            categories={dealCategories}
+            selectedCategory={selectedCategory}
+            onSelectCategory={setSelectedCategory}
+          />
           
           {/* Featured deals */}
-          <section className="mb-8 animate-slide-up" style={{ animationDelay: "700ms" }}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">
-                {selectedCategory === "All Deals" ? "Featured Deals" : selectedCategory}
-              </h2>
-            </div>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredDeals.map((deal, index) => (
-                <DealCard
-                  key={deal.id}
-                  deal={deal}
-                  className="animate-slide-up"
-                  style={{ animationDelay: `${750 + index * 50}ms` }}
-                />
-              ))}
-            </div>
-          </section>
+          <FeaturedDealsSection 
+            deals={filteredDeals}
+            selectedCategory={selectedCategory}
+          />
         </div>
       </main>
       
