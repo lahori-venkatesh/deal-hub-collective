@@ -93,3 +93,19 @@
   opacity: 0;
 }
 
+/* Dot animation for carousel */
+@keyframes dot-pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.dot-active {
+  animation: dot-pulse 1.5s infinite;
+}

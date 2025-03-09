@@ -1,9 +1,10 @@
 
-import React, { useRef } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Deal } from '@/utils/types';
 import DealCard from './DealCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from './button';
+import { cn } from '@/lib/utils';
 
 interface CategoryCarouselProps {
   deals: Deal[];
@@ -11,6 +12,7 @@ interface CategoryCarouselProps {
 
 const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ deals }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
   const scroll = (direction: 'left' | 'right') => {
     if (scrollRef.current) {
@@ -24,6 +26,24 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ deals }) => {
       }
     }
   };
+
+  // Update the active index based on scroll position
+  const handleScroll = () => {
+    if (scrollRef.current) {
+      const scrollPosition = scrollRef.current.scrollLeft;
+      const itemWidth = scrollRef.current.offsetWidth;
+      const newIndex = Math.round(scrollPosition / itemWidth);
+      setActiveIndex(Math.min(Math.max(0, newIndex), deals.length - 1));
+    }
+  };
+
+  useEffect(() => {
+    const scrollContainer = scrollRef.current;
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+      return () => scrollContainer.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
 
   return (
     <div className="relative group">
@@ -65,6 +85,30 @@ const CategoryCarousel: React.FC<CategoryCarouselProps> = ({ deals }) => {
       >
         <ChevronRight size={18} />
       </Button>
+
+      {/* Mapping dots */}
+      <div className="flex justify-center mt-2 space-x-1.5">
+        {deals.map((_, index) => (
+          <div
+            key={index}
+            className={cn(
+              "w-2 h-2 rounded-full transition-all duration-300",
+              activeIndex === index 
+                ? "bg-primary scale-125" 
+                : "bg-muted hover:bg-muted-foreground/50 cursor-pointer"
+            )}
+            onClick={() => {
+              if (scrollRef.current) {
+                const itemWidth = scrollRef.current.clientWidth;
+                scrollRef.current.scrollTo({
+                  left: index * itemWidth,
+                  behavior: 'smooth'
+                });
+              }
+            }}
+          />
+        ))}
+      </div>
     </div>
   );
 };

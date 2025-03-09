@@ -69,8 +69,20 @@ const Home: React.FC = () => {
             Discover crowd-sourced deals, verified by your community.
           </p>
           
-          {/* Personalized Deals Section */}
+          {/* Map section - Moved to the top */}
           <section className="mb-8 animate-slide-up" style={{ animationDelay: "100ms" }}>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold">Nearby Deals</h2>
+              <button className="text-sm text-primary flex items-center hover:underline">
+                View all <ChevronRight size={16} />
+              </button>
+            </div>
+            
+            <MapView className="shadow-soft" />
+          </section>
+          
+          {/* Personalized Deals Section */}
+          <section className="mb-8 animate-slide-up" style={{ animationDelay: "150ms" }}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold flex items-center gap-2">
                 <Award size={20} className="text-primary" />
@@ -91,22 +103,10 @@ const Home: React.FC = () => {
                   deal={deal}
                   compact
                   className="animate-slide-up"
-                  style={{ animationDelay: `${150 + index * 50}ms` }}
+                  style={{ animationDelay: `${200 + index * 50}ms` }}
                 />
               ))}
             </div>
-          </section>
-          
-          {/* Map section */}
-          <section className="mb-8 animate-slide-up" style={{ animationDelay: "200ms" }}>
-            <div className="flex items-center justify-between mb-4">
-              <h2 className="text-xl font-semibold">Nearby Deals</h2>
-              <button className="text-sm text-primary flex items-center hover:underline">
-                View all <ChevronRight size={16} />
-              </button>
-            </div>
-            
-            <MapView className="shadow-soft" />
           </section>
           
           {/* Trending Sections */}
@@ -119,7 +119,7 @@ const Home: React.FC = () => {
             </div>
             
             {/* Students Love These */}
-            <div className="mb-6">
+            <div className="mb-8">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
                   <GraduationCap size={18} className="mr-2 text-primary" />
@@ -133,7 +133,7 @@ const Home: React.FC = () => {
             </div>
             
             {/* Top Savings for Families */}
-            <div className="mb-6">
+            <div className="mb-8">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
                   <Users size={18} className="mr-2 text-primary" />
@@ -147,7 +147,7 @@ const Home: React.FC = () => {
             </div>
             
             {/* Office Goer Specials */}
-            <div className="mb-6">
+            <div className="mb-8">
               <div className="flex items-center justify-between mb-3">
                 <div className="flex items-center">
                   <Briefcase size={18} className="mr-2 text-primary" />
