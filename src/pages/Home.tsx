@@ -8,6 +8,8 @@ import DealCard from '@/components/ui/DealCard';
 import AddDealButton from '@/components/ui/AddDealButton';
 import { mockDeals, dealCategories, currentUser } from '@/utils/mockData';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import CategoryCarousel from '@/components/ui/CategoryCarousel';
 
 const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Deals");
@@ -29,19 +31,19 @@ const Home: React.FC = () => {
   const getStudentDeals = () => {
     return mockDeals
       .filter(deal => deal.userCategories?.includes("student"))
-      .slice(0, 3);
+      .slice(0, 4);
   };
 
   const getFamilyDeals = () => {
     return mockDeals
       .filter(deal => deal.userCategories?.includes("family"))
-      .slice(0, 3);
+      .slice(0, 4);
   };
 
   const getProfessionalDeals = () => {
     return mockDeals
       .filter(deal => deal.userCategories?.includes("professional"))
-      .slice(0, 3);
+      .slice(0, 4);
   };
   
   return (
@@ -118,59 +120,44 @@ const Home: React.FC = () => {
             
             {/* Students Love These */}
             <div className="mb-6">
-              <div className="flex items-center mb-3">
-                <GraduationCap size={18} className="mr-2 text-primary" />
-                <h3 className="font-medium">Students Love These</h3>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center">
+                  <GraduationCap size={18} className="mr-2 text-primary" />
+                  <h3 className="font-medium">Students Love These</h3>
+                </div>
+                <Link to="/explore?category=student" className="text-sm text-primary flex items-center hover:underline">
+                  View all <ChevronRight size={16} />
+                </Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {getStudentDeals().map((deal, index) => (
-                  <DealCard
-                    key={deal.id}
-                    deal={deal}
-                    compact
-                    className="animate-slide-up"
-                    style={{ animationDelay: `${300 + index * 50}ms` }}
-                  />
-                ))}
-              </div>
+              <CategoryCarousel deals={getStudentDeals()} />
             </div>
             
             {/* Top Savings for Families */}
             <div className="mb-6">
-              <div className="flex items-center mb-3">
-                <Users size={18} className="mr-2 text-primary" />
-                <h3 className="font-medium">Top Savings for Families</h3>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center">
+                  <Users size={18} className="mr-2 text-primary" />
+                  <h3 className="font-medium">Top Savings for Families</h3>
+                </div>
+                <Link to="/explore?category=family" className="text-sm text-primary flex items-center hover:underline">
+                  View all <ChevronRight size={16} />
+                </Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {getFamilyDeals().map((deal, index) => (
-                  <DealCard
-                    key={deal.id}
-                    deal={deal}
-                    compact
-                    className="animate-slide-up"
-                    style={{ animationDelay: `${450 + index * 50}ms` }}
-                  />
-                ))}
-              </div>
+              <CategoryCarousel deals={getFamilyDeals()} />
             </div>
             
             {/* Office Goer Specials */}
             <div className="mb-6">
-              <div className="flex items-center mb-3">
-                <Briefcase size={18} className="mr-2 text-primary" />
-                <h3 className="font-medium">Office Goer Specials</h3>
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center">
+                  <Briefcase size={18} className="mr-2 text-primary" />
+                  <h3 className="font-medium">Office Goer Specials</h3>
+                </div>
+                <Link to="/explore?category=professional" className="text-sm text-primary flex items-center hover:underline">
+                  View all <ChevronRight size={16} />
+                </Link>
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {getProfessionalDeals().map((deal, index) => (
-                  <DealCard
-                    key={deal.id}
-                    deal={deal}
-                    compact
-                    className="animate-slide-up"
-                    style={{ animationDelay: `${600 + index * 50}ms` }}
-                  />
-                ))}
-              </div>
+              <CategoryCarousel deals={getProfessionalDeals()} />
             </div>
           </section>
           
