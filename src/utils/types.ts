@@ -23,6 +23,7 @@ export interface Deal {
   verified: number;
   flagged: number;
   image: string;
+  userCategories?: Array<"student" | "family" | "professional">;
 }
 
 export interface User {
@@ -35,6 +36,7 @@ export interface User {
   joined: string;
   isPremium: boolean;
   location?: string;
+  category?: "student" | "family" | "professional";
 }
 
 export interface Notification {

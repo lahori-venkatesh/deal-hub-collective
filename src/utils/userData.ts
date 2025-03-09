@@ -11,5 +11,6 @@ export const currentUser: User = {
   dealsVerified: 28,
   joined: "2023-09-15",
   isPremium: false,
-  location: "Mumbai, Maharashtra"
+  location: "Mumbai, Maharashtra",
+  category: "student"
 };

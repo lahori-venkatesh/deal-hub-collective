@@ -1,12 +1,13 @@
 
 import React, { useState } from 'react';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, QrCode, GraduationCap, Users, Briefcase, Award, TrendingUp } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
 import MapView from '@/components/ui/MapView';
 import DealCard from '@/components/ui/DealCard';
 import AddDealButton from '@/components/ui/AddDealButton';
-import { mockDeals, dealCategories } from '@/utils/mockData';
+import { mockDeals, dealCategories, currentUser } from '@/utils/mockData';
+import { Button } from '@/components/ui/button';
 
 const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Deals");
@@ -16,21 +17,86 @@ const Home: React.FC = () => {
     ? mockDeals 
     : mockDeals.filter(deal => deal.category === selectedCategory);
   
+  // Get personalized deals based on user category
+  const getPersonalizedDeals = () => {
+    if (!currentUser.category) return mockDeals.slice(0, 3);
+    return mockDeals
+      .filter(deal => deal.userCategories?.includes(currentUser.category as any))
+      .slice(0, 3);
+  };
+
+  // Get category-specific deals
+  const getStudentDeals = () => {
+    return mockDeals
+      .filter(deal => deal.userCategories?.includes("student"))
+      .slice(0, 3);
+  };
+
+  const getFamilyDeals = () => {
+    return mockDeals
+      .filter(deal => deal.userCategories?.includes("family"))
+      .slice(0, 3);
+  };
+
+  const getProfessionalDeals = () => {
+    return mockDeals
+      .filter(deal => deal.userCategories?.includes("professional"))
+      .slice(0, 3);
+  };
+  
   return (
     <div className="min-h-screen bg-background pb-16">
       <Header />
       
       <main className="pt-16 px-4 max-w-7xl mx-auto">
         <div className="py-4">
-          <h1 className="text-3xl font-bold tracking-tight mb-2 animate-slide-up">
-            SaveSphere
-          </h1>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-3xl font-bold tracking-tight animate-slide-up">
+              SaveSphere
+            </h1>
+            <Button 
+              variant="outline" 
+              size="sm" 
+              className="flex items-center gap-2 rounded-full animate-slide-up"
+            >
+              <QrCode size={16} />
+              <span>Scan</span>
+            </Button>
+          </div>
           <p className="text-muted-foreground mb-6 animate-slide-up" style={{ animationDelay: "50ms" }}>
             Discover crowd-sourced deals, verified by your community.
           </p>
           
-          {/* Map section */}
+          {/* Personalized Deals Section */}
           <section className="mb-8 animate-slide-up" style={{ animationDelay: "100ms" }}>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <Award size={20} className="text-primary" />
+                {currentUser.category === "student" ? "Deals for Students" : 
+                 currentUser.category === "family" ? "Family Specials" : 
+                 currentUser.category === "professional" ? "Office Goer Specials" : 
+                 "Recommended for You"}
+              </h2>
+              <button className="text-sm text-primary flex items-center hover:underline">
+                View all <ChevronRight size={16} />
+              </button>
+            </div>
+            
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {getPersonalizedDeals().map((deal, index) => (
+                <DealCard
+                  key={deal.id}
+                  deal={deal}
+                  compact
+                  className="animate-slide-up"
+                  style={{ animationDelay: `${150 + index * 50}ms` }}
+                />
+              ))}
+            </div>
+          </section>
+          
+          {/* Map section */}
+          <section className="mb-8 animate-slide-up" style={{ animationDelay: "200ms" }}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">Nearby Deals</h2>
               <button className="text-sm text-primary flex items-center hover:underline">
@@ -41,8 +107,75 @@ const Home: React.FC = () => {
             <MapView className="shadow-soft" />
           </section>
           
+          {/* Trending Sections */}
+          <section className="mb-8 animate-slide-up" style={{ animationDelay: "250ms" }}>
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-semibold flex items-center gap-2">
+                <TrendingUp size={20} className="text-primary" />
+                <span>Trending Now</span>
+              </h2>
+            </div>
+            
+            {/* Students Love These */}
+            <div className="mb-6">
+              <div className="flex items-center mb-3">
+                <GraduationCap size={18} className="mr-2 text-primary" />
+                <h3 className="font-medium">Students Love These</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {getStudentDeals().map((deal, index) => (
+                  <DealCard
+                    key={deal.id}
+                    deal={deal}
+                    compact
+                    className="animate-slide-up"
+                    style={{ animationDelay: `${300 + index * 50}ms` }}
+                  />
+                ))}
+              </div>
+            </div>
+            
+            {/* Top Savings for Families */}
+            <div className="mb-6">
+              <div className="flex items-center mb-3">
+                <Users size={18} className="mr-2 text-primary" />
+                <h3 className="font-medium">Top Savings for Families</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {getFamilyDeals().map((deal, index) => (
+                  <DealCard
+                    key={deal.id}
+                    deal={deal}
+                    compact
+                    className="animate-slide-up"
+                    style={{ animationDelay: `${450 + index * 50}ms` }}
+                  />
+                ))}
+              </div>
+            </div>
+            
+            {/* Office Goer Specials */}
+            <div className="mb-6">
+              <div className="flex items-center mb-3">
+                <Briefcase size={18} className="mr-2 text-primary" />
+                <h3 className="font-medium">Office Goer Specials</h3>
+              </div>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {getProfessionalDeals().map((deal, index) => (
+                  <DealCard
+                    key={deal.id}
+                    deal={deal}
+                    compact
+                    className="animate-slide-up"
+                    style={{ animationDelay: `${600 + index * 50}ms` }}
+                  />
+                ))}
+              </div>
+            </div>
+          </section>
+          
           {/* Categories */}
-          <section className="mb-6 animate-slide-up" style={{ animationDelay: "150ms" }}>
+          <section className="mb-6 animate-slide-up" style={{ animationDelay: "650ms" }}>
             <div className="overflow-x-auto pb-2">
               <div className="flex space-x-2">
                 {dealCategories.map((category) => (
@@ -63,7 +196,7 @@ const Home: React.FC = () => {
           </section>
           
           {/* Featured deals */}
-          <section className="mb-8 animate-slide-up" style={{ animationDelay: "200ms" }}>
+          <section className="mb-8 animate-slide-up" style={{ animationDelay: "700ms" }}>
             <div className="flex items-center justify-between mb-4">
               <h2 className="text-xl font-semibold">
                 {selectedCategory === "All Deals" ? "Featured Deals" : selectedCategory}
@@ -76,7 +209,7 @@ const Home: React.FC = () => {
                   key={deal.id}
                   deal={deal}
                   className="animate-slide-up"
-                  style={{ animationDelay: `${250 + index * 50}ms` }}
+                  style={{ animationDelay: `${750 + index * 50}ms` }}
                 />
               ))}
             </div>
