@@ -8,7 +8,13 @@ import {
   Calendar, 
   LogOut,
   CrownIcon,
-  CheckCircle2
+  CheckCircle2,
+  Share2,
+  Gift,
+  Zap,
+  GraduationCap,
+  ShoppingCart,
+  Briefcase
 } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { toast } from 'sonner';
@@ -18,11 +24,13 @@ import UserAvatar from '@/components/ui/UserAvatar';
 import PointsBadge from '@/components/ui/PointsBadge';
 import { mockDeals } from '@/utils/dealsData';
 import { currentUser } from '@/utils/userData';
+import { Button } from '@/components/ui/button';
 
 const Profile: React.FC = () => {
   const navigate = useNavigate();
   const { toast: shadowToast } = useToast();
   const [isPremium, setIsPremium] = useState(currentUser.isPremium);
+  const [showRewardsModal, setShowRewardsModal] = useState(false);
   
   // Update user with Indian name and location
   const user = {
@@ -43,6 +51,9 @@ const Profile: React.FC = () => {
   // Convert points to Indian Rupees (just for display)
   const pointsInRupees = user.points * 10; // Assuming 1 point = ₹10
   
+  // Monthly savings - for the savings tracker
+  const monthlySavings = 2000; // This would be calculated from actual deal usage in a real app
+  
   const handleLogout = () => {
     shadowToast({
       title: "Logged out successfully",
@@ -62,6 +73,53 @@ const Profile: React.FC = () => {
       icon: <CrownIcon className="text-yellow-500" />,
     });
   };
+
+  const handleShareSavings = () => {
+    toast.success("Savings summary ready to share!", {
+      description: "Your savings summary has been copied to clipboard.",
+      icon: <Share2 className="text-blue-500" />,
+    });
+    // In a real app, this would trigger the native share dialog
+  };
+
+  const getRewardSuggestions = () => {
+    switch(user.category) {
+      case 'student':
+        return [
+          { name: "Zomato ₹200 Coupon", points: 300, icon: "🍔" },
+          { name: "Exam Stationery Kit", points: 450, icon: "📝" },
+          { name: "College Fest Pass", points: 600, icon: "🎭" }
+        ];
+      case 'family':
+        return [
+          { name: "Big Bazaar ₹500 Voucher", points: 800, icon: "🛒" },
+          { name: "Disney+ Hotstar 1 Month", points: 600, icon: "📺" },
+          { name: "Family Restaurant Deal", points: 900, icon: "🍽️" }
+        ];
+      case 'professional':
+      default:
+        return [
+          { name: "Uber ₹300 Credit", points: 500, icon: "🚗" },
+          { name: "LinkedIn Learning 1 Month", points: 750, icon: "💻" },
+          { name: "Premium Coffee Subscription", points: 400, icon: "☕" }
+        ];
+    }
+  };
+
+  const getRoleBadge = () => {
+    switch(user.category) {
+      case 'student':
+        return { icon: <GraduationCap size={16} className="mr-1" />, name: "Campus Saver" };
+      case 'family':
+        return { icon: <ShoppingCart size={16} className="mr-1" />, name: "Grocery Guru" };
+      case 'professional':
+      default:
+        return { icon: <Briefcase size={16} className="mr-1" />, name: "Office Hero" };
+    }
+  };
+
+  const roleBadge = getRoleBadge();
+  const rewardSuggestions = getRewardSuggestions();
   
   return (
     <div className="min-h-screen bg-background pb-16">
@@ -98,6 +156,11 @@ const Profile: React.FC = () => {
                   Premium
                 </span>
               )}
+              {/* Role Badge */}
+              <span className="bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full flex items-center">
+                {roleBadge.icon}
+                {roleBadge.name}
+              </span>
             </div>
           </div>
           
@@ -113,6 +176,23 @@ const Profile: React.FC = () => {
               </div>
             </div>
             
+            {/* Savings Tracker */}
+            <div className="bg-green-50 text-green-800 rounded-lg p-4 mb-6 flex justify-between items-center">
+              <div>
+                <div className="font-semibold">You saved ₹{monthlySavings} this month!</div>
+                <div className="text-xs text-green-700">Based on deals you've used</div>
+              </div>
+              <Button 
+                variant="ghost" 
+                size="sm" 
+                className="h-8 bg-green-100 hover:bg-green-200 text-green-800"
+                onClick={handleShareSavings}
+              >
+                <Share2 size={16} className="mr-1" />
+                Share
+              </Button>
+            </div>
+            
             <div className="space-y-3">
               <div className="flex items-center text-sm">
                 <Calendar size={16} className="mr-3 text-muted-foreground" />
@@ -123,6 +203,43 @@ const Profile: React.FC = () => {
                 <span>Level 2 Deal Hunter</span>
               </div>
             </div>
+          </div>
+        </div>
+        
+        {/* Rewards Section */}
+        <div className="bg-card rounded-xl overflow-hidden border shadow-soft mb-6 animate-slide-up" style={{ animationDelay: "50ms" }}>
+          <div className="p-4 bg-primary/5 flex justify-between items-center">
+            <h3 className="font-semibold flex items-center">
+              <Gift size={18} className="mr-2 text-primary" />
+              Recommended Rewards for You
+            </h3>
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className="text-primary"
+              onClick={() => navigate('/rewards')}
+            >
+              See All
+            </Button>
+          </div>
+          <div className="p-4 grid grid-cols-1 gap-3">
+            {rewardSuggestions.map((reward, index) => (
+              <div key={index} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
+                <div className="flex items-center">
+                  <span className="text-xl mr-3">{reward.icon}</span>
+                  <span>{reward.name}</span>
+                </div>
+                <Button 
+                  variant="outline" 
+                  size="sm" 
+                  className={user.points >= reward.points ? "text-primary" : "text-muted-foreground"}
+                  disabled={user.points < reward.points}
+                >
+                  <Zap size={14} className="mr-1" />
+                  {reward.points} pts
+                </Button>
+              </div>
+            ))}
           </div>
         </div>
         
