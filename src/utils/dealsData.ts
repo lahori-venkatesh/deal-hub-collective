@@ -10,6 +10,7 @@ export const mockDeals: Deal[] = [
     discount: "50%",
     store: "Whole Foods Market",
     category: "Groceries",
+    dealType: "in-store", // Added dealType property
     location: {
       address: "123 Main St, San Francisco, CA",
       coordinates: {
@@ -36,6 +37,7 @@ export const mockDeals: Deal[] = [
     discount: "BOGO",
     store: "Starbucks",
     category: "Coffee & Beverages",
+    dealType: "in-store", // Added dealType property
     location: {
       address: "456 Market St, San Francisco, CA",
       coordinates: {
@@ -62,6 +64,7 @@ export const mockDeals: Deal[] = [
     discount: "30%",
     store: "Lululemon",
     category: "Clothing & Fashion",
+    dealType: "in-store", // Added dealType property
     location: {
       address: "789 Union Square, San Francisco, CA",
       coordinates: {
@@ -88,6 +91,7 @@ export const mockDeals: Deal[] = [
     discount: "75%",
     store: "Best Buy",
     category: "Electronics",
+    dealType: "in-store", // Added dealType property
     location: {
       address: "101 Technology Ave, San Francisco, CA",
       coordinates: {
@@ -114,6 +118,7 @@ export const mockDeals: Deal[] = [
     discount: "20%",
     store: "The Breakfast Club",
     category: "Restaurants & Dining",
+    dealType: "in-store", // Added dealType property
     location: {
       address: "202 Foodie Lane, San Francisco, CA",
       coordinates: {
@@ -141,6 +146,7 @@ export const mockDeals: Deal[] = [
     discount: "50%",
     store: "Dominos Pizza",
     category: "Restaurants & Dining",
+    dealType: "in-store", // Added dealType property
     location: {
       address: "123 University Ave, Mumbai, Maharashtra",
       coordinates: {
@@ -168,6 +174,7 @@ export const mockDeals: Deal[] = [
     discount: "30%",
     store: "Big Bazaar",
     category: "Groceries",
+    dealType: "in-store", // Added dealType property
     location: {
       address: "456 Shopping Mall, Mumbai, Maharashtra",
       coordinates: {
@@ -195,6 +202,7 @@ export const mockDeals: Deal[] = [
     discount: "25%",
     store: "Office Canteen",
     category: "Restaurants & Dining",
+    dealType: "in-store", // Added dealType property
     location: {
       address: "789 Business Park, Mumbai, Maharashtra",
       coordinates: {
@@ -214,6 +222,65 @@ export const mockDeals: Deal[] = [
     image: "https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
     userCategories: ["professional"]
   },
+  // Let's add some online and affiliate deals
+  {
+    id: "d9",
+    title: "FLAT 500 Off on Electronics",
+    description: "Use code TECHSAVE500 at checkout for ₹500 off on all electronics over ₹3000.",
+    discount: "₹500",
+    store: "Amazon",
+    category: "Electronics",
+    dealType: "online",
+    promoCode: "TECHSAVE500",
+    platform: "Amazon",
+    location: {
+      address: "Online",
+      coordinates: {
+        lat: 0,
+        lng: 0,
+      },
+    },
+    expiresAt: new Date(Date.now() + 3600000 * 72).toISOString(),
+    createdAt: new Date(Date.now() - 3600000 * 8).toISOString(),
+    postedBy: {
+      id: "u2",
+      name: "Jamie Smith",
+      avatar: "https://i.pravatar.cc/150?img=5",
+    },
+    verified: 30,
+    flagged: 0,
+    image: "https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1932&q=80",
+    userCategories: ["student", "professional", "family"]
+  },
+  {
+    id: "d10",
+    title: "40% Off First Myntra Order",
+    description: "Exclusive 40% discount on your first order with Myntra. Limited time offer!",
+    discount: "40%",
+    store: "Myntra",
+    category: "Clothing & Fashion",
+    dealType: "affiliate",
+    affiliateUrl: "https://www.myntra.com/?utm=savesphere&code=FIRST40",
+    platform: "Myntra",
+    location: {
+      address: "Online",
+      coordinates: {
+        lat: 0,
+        lng: 0,
+      },
+    },
+    expiresAt: new Date(Date.now() + 3600000 * 48).toISOString(),
+    createdAt: new Date(Date.now() - 3600000 * 6).toISOString(),
+    postedBy: {
+      id: "u3",
+      name: "Riley Chen",
+      avatar: "https://i.pravatar.cc/150?img=3",
+    },
+    verified: 15,
+    flagged: 0,
+    image: "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80",
+    userCategories: ["student", "family"]
+  }
 ];
 
 // Categories for filtering
