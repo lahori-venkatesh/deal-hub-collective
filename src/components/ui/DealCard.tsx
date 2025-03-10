@@ -1,25 +1,14 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { 
-  Clock, 
-  MapPin, 
-  ThumbsUp, 
-  Flag, 
-  ExternalLink, 
-  ShoppingCart, 
-  QrCode, 
-  Copy, 
-  CheckCircle,
-  Store,
-  Globe
-} from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Deal } from '@/utils/types';
-import { formatTimeRemaining, getExpiryColor, formatDistanceToNow } from '@/utils/utils';
-import UserAvatar from './UserAvatar';
-import { Button } from './button';
-import { toast } from '../ui/use-toast';
+import { formatTimeRemaining, getExpiryColor } from '@/utils/utils';
+import PromoCodeDisplay from './deal/PromoCodeDisplay';
+import DealTypeIndicator from './deal/DealTypeIndicator';
+import DealHeader from './deal/DealHeader';
+import DealActions from './deal/DealActions';
+import DealFooter from './deal/DealFooter';
 
 interface DealCardProps {
   deal: Deal;
@@ -36,37 +25,6 @@ const DealCard: React.FC<DealCardProps> = ({
   style,
   onRedeem
 }) => {
-  const copyPromoCode = (e: React.MouseEvent, code: string) => {
-    e.preventDefault();
-    e.stopPropagation();
-    navigator.clipboard.writeText(code);
-    toast({
-      title: "Code Copied!",
-      description: `${code} has been copied to your clipboard.`,
-    });
-  };
-
-  const handleRedeem = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (onRedeem) {
-      onRedeem(deal);
-    }
-  };
-
-  const getDealTypeIcon = () => {
-    switch (deal.dealType) {
-      case 'in-store':
-        return <Store size={14} className="mr-1 text-primary" />;
-      case 'online':
-        return <Globe size={14} className="mr-1 text-blue-500" />;
-      case 'affiliate':
-        return <ExternalLink size={14} className="mr-1 text-orange-500" />;
-      default:
-        return null;
-    }
-  };
-
   return (
     <Link 
       to={`/deal/${deal.id}`}
@@ -91,11 +49,6 @@ const DealCard: React.FC<DealCardProps> = ({
           <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm text-foreground">
             {deal.category}
           </span>
-          <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center">
-            {getDealTypeIcon()}
-            {deal.dealType === 'in-store' ? 'In-Store' : 
-             deal.dealType === 'online' ? 'Online' : 'Affiliate'}
-          </span>
         </div>
         
         <div className="absolute top-3 right-3">
@@ -108,29 +61,17 @@ const DealCard: React.FC<DealCardProps> = ({
         </div>
       </div>
       
-      <div className="p-4">
-        <h3 className="text-lg font-semibold line-clamp-1 mb-1">{deal.title}</h3>
-        
-        <div className="flex items-center text-sm text-muted-foreground mb-2">
-          <span className="font-medium text-foreground">{deal.store}</span>
-          <span className="mx-1.5">•</span>
-          {deal.dealType === 'in-store' ? (
-            <span className="text-xs flex items-center">
-              <MapPin size={12} className="mr-0.5" />
-              <span className="truncate max-w-[120px]">{deal.location.address.split(',')[0]}</span>
-            </span>
-          ) : (
-            <span className="text-xs flex items-center">
-              {deal.platform && (
-                <>
-                  <Globe size={12} className="mr-0.5" />
-                  <span>{deal.platform}</span>
-                </>
-              )}
-            </span>
-          )}
-        </div>
-        
+      <DealHeader 
+        title={deal.title}
+        store={deal.store}
+        category={deal.category}
+        dealType={deal.dealType}
+        expiresAt={deal.expiresAt}
+        location={deal.location}
+        platform={deal.platform}
+      />
+      
+      <div className="px-4 pb-4">
         <div className="mb-3">
           <span className="font-bold text-xl text-primary">
             {deal.discount} OFF
@@ -138,17 +79,7 @@ const DealCard: React.FC<DealCardProps> = ({
         </div>
         
         {!compact && deal.dealType === 'online' && deal.promoCode && (
-          <div className="bg-muted/70 p-2 rounded-md flex items-center justify-between mb-3">
-            <code className="text-sm font-mono">{deal.promoCode}</code>
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              className="h-7"
-              onClick={(e) => copyPromoCode(e, deal.promoCode!)}
-            >
-              <Copy size={14} />
-            </Button>
-          </div>
+          <PromoCodeDisplay code={deal.promoCode} className="mb-3" />
         )}
         
         {!compact && (
@@ -157,69 +88,14 @@ const DealCard: React.FC<DealCardProps> = ({
           </p>
         )}
         
-        {!compact && (
-          <div className="flex space-x-2 mb-4">
-            {deal.dealType === 'in-store' && (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full flex items-center justify-center"
-                onClick={handleRedeem}
-              >
-                <QrCode size={14} className="mr-1" />
-                Show Code
-              </Button>
-            )}
-            
-            {deal.dealType === 'online' && (
-              <Button 
-                variant="outline" 
-                size="sm" 
-                className="w-full flex items-center justify-center"
-                onClick={handleRedeem}
-              >
-                <ShoppingCart size={14} className="mr-1" />
-                Shop Now
-              </Button>
-            )}
-            
-            {deal.dealType === 'affiliate' && (
-              <Button 
-                variant="default" 
-                size="sm" 
-                className="w-full flex items-center justify-center"
-                onClick={handleRedeem}
-              >
-                <ExternalLink size={14} className="mr-1" />
-                Get Deal
-              </Button>
-            )}
-          </div>
-        )}
+        {!compact && <DealActions deal={deal} onRedeem={onRedeem} />}
         
-        <div className="flex items-center justify-between mt-auto">
-          <div className="flex items-center space-x-2">
-            <UserAvatar src={deal.postedBy.avatar} alt={deal.postedBy.name} size="sm" />
-            <div className="flex flex-col">
-              <span className="text-xs line-clamp-1">{deal.postedBy.name}</span>
-              <span className="text-xs text-muted-foreground">{formatDistanceToNow(deal.createdAt)}</span>
-            </div>
-          </div>
-          
-          <div className="flex space-x-3 text-muted-foreground">
-            <div className="flex items-center text-xs">
-              <ThumbsUp size={14} className="mr-1 text-success" />
-              <span>{deal.verified}</span>
-            </div>
-            
-            {deal.flagged > 0 && (
-              <div className="flex items-center text-xs">
-                <Flag size={14} className="mr-1 text-destructive" />
-                <span>{deal.flagged}</span>
-              </div>
-            )}
-          </div>
-        </div>
+        <DealFooter 
+          postedBy={deal.postedBy}
+          createdAt={deal.createdAt}
+          verified={deal.verified}
+          flagged={deal.flagged}
+        />
       </div>
     </Link>
   );
