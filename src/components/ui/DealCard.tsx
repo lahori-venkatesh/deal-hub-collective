@@ -91,6 +91,11 @@ const DealCard: React.FC<DealCardProps> = ({
           <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm text-foreground">
             {deal.category}
           </span>
+          <span className="text-xs font-medium px-2.5 py-1 rounded-full bg-background/90 backdrop-blur-sm text-foreground flex items-center">
+            {getDealTypeIcon()}
+            {deal.dealType === 'in-store' ? 'In-Store' : 
+             deal.dealType === 'online' ? 'Online' : 'Affiliate'}
+          </span>
         </div>
         
         <div className="absolute top-3 right-3">
@@ -104,14 +109,7 @@ const DealCard: React.FC<DealCardProps> = ({
       </div>
       
       <div className="p-4">
-        <div className="flex justify-between items-center mb-1">
-          <h3 className="text-lg font-semibold line-clamp-1">{deal.title}</h3>
-          <span className="text-xs flex items-center px-2 py-0.5 rounded-full bg-muted/50">
-            {getDealTypeIcon()}
-            {deal.dealType === 'in-store' ? 'In-Store' : 
-             deal.dealType === 'online' ? 'Online' : 'Affiliate'}
-          </span>
-        </div>
+        <h3 className="text-lg font-semibold line-clamp-1 mb-1">{deal.title}</h3>
         
         <div className="flex items-center text-sm text-muted-foreground mb-2">
           <span className="font-medium text-foreground">{deal.store}</span>
