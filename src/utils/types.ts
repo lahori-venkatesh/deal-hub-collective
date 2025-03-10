@@ -6,6 +6,10 @@ export interface Deal {
   discount: string;
   store: string;
   category: string;
+  dealType: "in-store" | "online" | "affiliate";
+  promoCode?: string;
+  affiliateUrl?: string;
+  redemptionId?: string;
   location: {
     address: string;
     coordinates: {
@@ -24,6 +28,9 @@ export interface Deal {
   flagged: number;
   image: string;
   userCategories?: Array<"student" | "family" | "professional">;
+  platform?: string; // For online deals (e.g., Amazon, Myntra)
+  isRedeemed?: boolean;
+  receiptVerified?: boolean;
 }
 
 export interface User {
@@ -37,6 +44,8 @@ export interface User {
   isPremium: boolean;
   location?: string;
   category?: "student" | "family" | "professional";
+  reputation?: number;
+  isTrustedVerifier?: boolean;
 }
 
 export interface Notification {
@@ -48,3 +57,5 @@ export interface Notification {
   read: boolean;
   relatedDealId?: string;
 }
+
+export type DealFilter = "all" | "in-store" | "online" | "affiliate";
