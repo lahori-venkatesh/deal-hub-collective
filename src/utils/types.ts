@@ -46,6 +46,19 @@ export interface User {
   category?: "student" | "family" | "professional";
   reputation?: number;
   isTrustedVerifier?: boolean;
+  email?: string;
+  phone?: string;
+  accountType?: "user" | "business";
+  businessDetails?: {
+    name: string;
+    type: string;
+    isVerified: boolean;
+    documents: string[];
+    email: string;
+    contact: string;
+  };
+  dealPreferences?: string[];
+  locationAccess?: boolean;
 }
 
 export interface Notification {
@@ -59,3 +72,30 @@ export interface Notification {
 }
 
 export type DealFilter = "all" | "in-store" | "online" | "affiliate";
+
+export interface BusinessDashboardStats {
+  totalDeals: number;
+  activeDeals: number;
+  expiredDeals: number;
+  totalRedemptions: number;
+  views: number;
+  engagement: number;
+  revenue: number;
+}
+
+export interface OnboardingState {
+  step: string;
+  accountType: "user" | "business" | null;
+  email: string;
+  phone: string;
+  password: string;
+  name: string;
+  businessName: string;
+  businessType: string;
+  dealPreferences: string[];
+  locationAccess: boolean;
+  documents: string[];
+  businessEmail: string;
+  businessContact: string;
+  termsAccepted: boolean;
+}

@@ -13,6 +13,8 @@ import NotFound from "./pages/NotFound";
 import Explore from "./pages/Explore";
 import SavedDeals from "./pages/SavedDeals";
 import MyDeals from "./pages/MyDeals";
+import Onboarding from "./pages/Onboarding";
+import BusinessDashboard from "./pages/BusinessDashboard";
 
 const queryClient = new QueryClient();
 
@@ -31,6 +33,8 @@ const App = () => (
           <Route path="/explore" element={<Explore />} />
           <Route path="/saved-deals" element={<SavedDeals />} />
           <Route path="/my-deals" element={<MyDeals />} />
+          <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/business-dashboard" element={<BusinessDashboard />} />
           {/* Future pages to be added */}
           <Route path="/achievements" element={<Home />} />
           <Route path="/rewards" element={<Home />} />
