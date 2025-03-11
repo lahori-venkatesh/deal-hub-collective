@@ -1,3 +1,4 @@
+
 export interface Deal {
   id: string;
   title: string;
@@ -22,6 +23,7 @@ export interface Deal {
     id: string;
     name: string;
     avatar: string;
+    accountType?: "user" | "business";
   };
   verified: number;
   flagged: number;

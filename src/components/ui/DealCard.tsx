@@ -10,7 +10,7 @@ import DealHeader from './deal/DealHeader';
 import DealActions from './deal/DealActions';
 import DealFooter from './deal/DealFooter';
 import { Badge } from '@/components/ui/badge';
-import { ShieldCheck, Star } from 'lucide-react';
+import { ShieldCheck, Star, AlertTriangle, Store } from 'lucide-react';
 
 interface DealCardProps {
   deal: Deal;
@@ -27,6 +27,9 @@ const DealCard: React.FC<DealCardProps> = ({
   style,
   onRedeem
 }) => {
+  // Determine if the deal is from a business account
+  const isBusinessDeal = deal.postedBy.accountType === 'business';
+  
   return (
     <Link 
       to={`/deal/${deal.id}`}
@@ -62,8 +65,17 @@ const DealCard: React.FC<DealCardProps> = ({
           </span>
         </div>
 
-        {/* Verification and Sponsored Badges */}
+        {/* Verification and Source Badges */}
         <div className="absolute bottom-3 right-3 flex space-x-2">
+          {/* Business Verified Badge */}
+          {isBusinessDeal && (
+            <Badge variant="default" className="flex items-center gap-1 bg-green-600/90 backdrop-blur-sm">
+              <Store size={12} />
+              <span>Business</span>
+            </Badge>
+          )}
+          
+          {/* Verification Badge */}
           {deal.verified > 3 && (
             <Badge variant="default" className="flex items-center gap-1 bg-primary/90 backdrop-blur-sm">
               <ShieldCheck size={12} />
@@ -71,6 +83,15 @@ const DealCard: React.FC<DealCardProps> = ({
             </Badge>
           )}
           
+          {/* Unverified Badge for user posted deals with low verification */}
+          {!isBusinessDeal && deal.verified < 2 && (
+            <Badge variant="default" className="flex items-center gap-1 bg-amber-600/90 backdrop-blur-sm">
+              <AlertTriangle size={12} />
+              <span>Unverified</span>
+            </Badge>
+          )}
+          
+          {/* Sponsored Badge */}
           {deal.sponsored && (
             <Badge variant="default" className="flex items-center gap-1 bg-amber-500/90 text-white backdrop-blur-sm">
               <Star size={12} />
