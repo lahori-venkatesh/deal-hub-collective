@@ -18,12 +18,21 @@ export const useUserRewards = (user: User) => {
   const getRoleBadge = (): RoleBadge => {
     switch(user.category) {
       case 'student':
-        return { icon: <GraduationCap size={16} className="mr-1" />, name: "Campus Saver" };
+        return { 
+          icon: React.createElement(GraduationCap, { size: 16, className: "mr-1" }), 
+          name: "Campus Saver" 
+        };
       case 'family':
-        return { icon: <ShoppingCart size={16} className="mr-1" />, name: "Grocery Guru" };
+        return { 
+          icon: React.createElement(ShoppingCart, { size: 16, className: "mr-1" }), 
+          name: "Grocery Guru" 
+        };
       case 'professional':
       default:
-        return { icon: <Briefcase size={16} className="mr-1" />, name: "Office Hero" };
+        return { 
+          icon: React.createElement(Briefcase, { size: 16, className: "mr-1" }), 
+          name: "Office Hero" 
+        };
     }
   };
 
