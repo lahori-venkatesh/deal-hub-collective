@@ -1,5 +1,3 @@
-
-// Helper functions
 export const formatDistanceToNow = (dateString: string): string => {
   const date = new Date(dateString);
   const now = new Date();

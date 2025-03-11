@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { 
@@ -25,8 +24,7 @@ import {
 } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
-import { dealCategories } from '@/utils/mockData';
-import { currentUser } from '@/utils/userData';
+import { dealCategories, currentUser } from '@/utils/mockData';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { toast } from '@/components/ui/use-toast';
