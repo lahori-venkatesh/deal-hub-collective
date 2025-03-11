@@ -12,6 +12,8 @@ interface RewardItem {
   name: string;
   points: number;
   icon: string;
+  sponsored?: boolean;
+  verified?: boolean;
 }
 
 export const useUserRewards = (user: User) => {
@@ -40,21 +42,21 @@ export const useUserRewards = (user: User) => {
     switch(user.category) {
       case 'student':
         return [
-          { name: "Zomato ₹200 Coupon", points: 300, icon: "🍔" },
+          { name: "Zomato ₹200 Coupon", points: 300, icon: "🍔", verified: true },
           { name: "Exam Stationery Kit", points: 450, icon: "📝" },
-          { name: "College Fest Pass", points: 600, icon: "🎭" }
+          { name: "College Fest Pass", points: 600, icon: "🎭", sponsored: true }
         ];
       case 'family':
         return [
-          { name: "Big Bazaar ₹500 Voucher", points: 800, icon: "🛒" },
-          { name: "Disney+ Hotstar 1 Month", points: 600, icon: "📺" },
+          { name: "Big Bazaar ₹500 Voucher", points: 800, icon: "🛒", verified: true },
+          { name: "Disney+ Hotstar 1 Month", points: 600, icon: "📺", sponsored: true },
           { name: "Family Restaurant Deal", points: 900, icon: "🍽️" }
         ];
       case 'professional':
       default:
         return [
-          { name: "Uber ₹300 Credit", points: 500, icon: "🚗" },
-          { name: "LinkedIn Learning 1 Month", points: 750, icon: "💻" },
+          { name: "Uber ₹300 Credit", points: 500, icon: "🚗", sponsored: true },
+          { name: "LinkedIn Learning 1 Month", points: 750, icon: "💻", verified: true },
           { name: "Premium Coffee Subscription", points: 400, icon: "☕" }
         ];
     }

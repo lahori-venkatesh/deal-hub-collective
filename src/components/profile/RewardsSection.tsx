@@ -1,14 +1,17 @@
 
 import React from 'react';
-import { Gift, Zap } from 'lucide-react';
+import { Gift, Zap, ShieldCheck, Star } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 import { User } from '@/utils/types';
+import { Badge } from '@/components/ui/badge';
 
 interface RewardItem {
   name: string;
   points: number;
   icon: string;
+  sponsored?: boolean;
+  verified?: boolean;
 }
 
 interface RewardsSectionProps {
@@ -40,7 +43,24 @@ const RewardsSection: React.FC<RewardsSectionProps> = ({ user, rewardSuggestions
           <div key={index} className="flex justify-between items-center p-3 bg-muted/30 rounded-lg hover:bg-muted/50 transition-colors">
             <div className="flex items-center">
               <span className="text-xl mr-3">{reward.icon}</span>
-              <span>{reward.name}</span>
+              <div>
+                <span>{reward.name}</span>
+                <div className="flex space-x-2 mt-1">
+                  {reward.verified && (
+                    <Badge variant="default" className="flex items-center gap-1 bg-primary/90 h-5 text-xs">
+                      <ShieldCheck size={10} />
+                      <span>Verified</span>
+                    </Badge>
+                  )}
+                  
+                  {reward.sponsored && (
+                    <Badge variant="default" className="flex items-center gap-1 bg-amber-500/90 text-white h-5 text-xs">
+                      <Star size={10} />
+                      <span>Sponsored</span>
+                    </Badge>
+                  )}
+                </div>
+              </div>
             </div>
             <Button 
               variant="outline" 

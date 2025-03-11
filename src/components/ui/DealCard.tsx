@@ -9,6 +9,8 @@ import DealTypeIndicator from './deal/DealTypeIndicator';
 import DealHeader from './deal/DealHeader';
 import DealActions from './deal/DealActions';
 import DealFooter from './deal/DealFooter';
+import { Badge } from '@/components/ui/badge';
+import { ShieldCheck, Star } from 'lucide-react';
 
 interface DealCardProps {
   deal: Deal;
@@ -58,6 +60,23 @@ const DealCard: React.FC<DealCardProps> = ({
           )}>
             {formatTimeRemaining(deal.expiresAt)}
           </span>
+        </div>
+
+        {/* Verification and Sponsored Badges */}
+        <div className="absolute bottom-3 right-3 flex space-x-2">
+          {deal.verified > 3 && (
+            <Badge variant="default" className="flex items-center gap-1 bg-primary/90 backdrop-blur-sm">
+              <ShieldCheck size={12} />
+              <span>Verified</span>
+            </Badge>
+          )}
+          
+          {deal.sponsored && (
+            <Badge variant="default" className="flex items-center gap-1 bg-amber-500/90 text-white backdrop-blur-sm">
+              <Star size={12} />
+              <span>Sponsored</span>
+            </Badge>
+          )}
         </div>
       </div>
       

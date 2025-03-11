@@ -1,4 +1,3 @@
-
 export interface Deal {
   id: string;
   title: string;
@@ -31,6 +30,7 @@ export interface Deal {
   platform?: string; // For online deals (e.g., Amazon, Myntra)
   isRedeemed?: boolean;
   receiptVerified?: boolean;
+  sponsored?: boolean; // Added this field for sponsored deals
 }
 
 export interface User {
