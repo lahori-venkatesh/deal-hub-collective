@@ -1,9 +1,10 @@
 
 import { User } from '@/utils/types';
 import { GraduationCap, ShoppingCart, Briefcase } from 'lucide-react';
+import React from 'react';
 
 interface RoleBadge {
-  icon: JSX.Element;
+  icon: React.ReactNode;
   name: string;
 }
 
