@@ -157,7 +157,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 5,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     sponsored: true
   },
   {
@@ -174,7 +174,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 14).toISOString(),
     createdAt: "2023-08-03T14:20:00Z",
     postedBy: {
       id: "user2",
@@ -184,7 +184,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 7,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1485230895905-ec338641421b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1485230895905-ec338641421b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     platform: "Lifestyle Online"
   },
   {
@@ -200,7 +200,7 @@ export const mockDeals: Deal[] = [
       address: "The Grand Hotel, MG Road, Bangalore",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 10).toISOString(),
     createdAt: "2023-08-04T11:15:00Z",
     postedBy: {
       id: "user3",
@@ -210,7 +210,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 6,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1551782450-a2132b4ba212?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    image: "https://images.unsplash.com/photo-1551782450-a2132b4ba212?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
   },
   {
     id: "deal4",
@@ -226,7 +226,7 @@ export const mockDeals: Deal[] = [
       address: "PVR Koramangala, Bangalore",
       coordinates: { lat: 12.9349, lng: 77.6205 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 5).toISOString(),
     createdAt: "2023-08-05T15:30:00Z",
     postedBy: {
       id: "user2",
@@ -236,7 +236,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 1, // Low verification score
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1627133900223-aabebbe9566b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1627133900223-aabebbe9566b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     platform: "PVR App"
   },
   {
@@ -253,7 +253,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 20).toISOString(),
     createdAt: "2023-08-06T12:45:00Z",
     postedBy: {
       id: "user4",
@@ -263,7 +263,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 9,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1584768176383-1451985588ca?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1584768176383-1451985588ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     platform: "Croma Online"
   },
   {
@@ -279,7 +279,7 @@ export const mockDeals: Deal[] = [
       address: "The Dessert Factory, Indiranagar, Bangalore",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 15).toISOString(),
     createdAt: "2023-08-07T16:00:00Z",
     postedBy: {
       id: "user1",
@@ -289,7 +289,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 4,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1563720239558-9e94790c3542?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    image: "https://images.unsplash.com/photo-1563720239558-9e94790c3542?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
   },
   {
     id: "deal7",
@@ -305,7 +305,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 30).toISOString(),
     createdAt: "2023-08-08T13:30:00Z",
     postedBy: {
       id: "user5",
@@ -315,7 +315,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 3,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     platform: "Bata Online"
   },
   {
@@ -331,7 +331,7 @@ export const mockDeals: Deal[] = [
       address: "Cinepolis, JP Nagar, Bangalore",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 8).toISOString(),
     createdAt: "2023-08-09T10:00:00Z",
     postedBy: {
       id: "user2",
@@ -341,7 +341,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 8,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1578560904687-64d99a18d93b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80"
+    image: "https://images.unsplash.com/photo-1578560904687-64d99a18d93b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
   },
   {
     id: "deal9",
@@ -357,7 +357,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 12).toISOString(),
     createdAt: "2023-08-10T11:45:00Z",
     postedBy: {
       id: "user3",
@@ -367,7 +367,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 5,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1567016546863-c50149632353?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1567016546863-c50149632353?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     platform: "Home Centre Online"
   },
   {
@@ -384,7 +384,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 25).toISOString(),
     createdAt: "2023-08-10T09:15:00Z",
     postedBy: {
       id: "user5",
@@ -394,7 +394,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 8,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     platform: "Myntra",
     sponsored: true
   },
@@ -412,7 +412,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 18).toISOString(),
     createdAt: "2023-08-11T14:30:00Z",
     postedBy: {
       id: "user6",
@@ -422,7 +422,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 7,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1534161394100-49c9939f11d8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1534161394100-49c9939f11d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     platform: "Amazon",
     sponsored: false
   },
@@ -440,7 +440,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 21).toISOString(),
     createdAt: "2023-08-12T10:00:00Z",
     postedBy: {
       id: "user7",
@@ -450,7 +450,7 @@ export const mockDeals: Deal[] = [
     },
     verified: 9,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80",
+    image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
     platform: "Flipkart",
     sponsored: true
   }
@@ -494,4 +494,3 @@ export const mockNotifications: Notification[] = [
     relatedDealId: "deal3"
   }
 ];
-
