@@ -1,10 +1,11 @@
 
 import React from 'react';
-import { MapPin, Globe, Store } from 'lucide-react';
+import { MapPin, Globe, Store, Star } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { formatTimeRemaining, getExpiryColor } from '@/utils/mockData';
 import { Deal } from '@/utils/types';
 import DealTypeIndicator from '@/components/ui/deal/DealTypeIndicator';
+import { Badge } from '@/components/ui/badge';
 
 interface DealInfoCardProps {
   deal: Deal;
@@ -24,6 +25,9 @@ const DealInfoCard: React.FC<DealInfoCardProps> = ({ deal }) => {
     }
   };
 
+  // Determine if the deal is from a business account
+  const isBusinessDeal = deal?.postedBy?.accountType === 'business';
+
   return (
     <div className="bg-background rounded-xl shadow-soft p-5 border animate-scale-in">
       <div className="mb-4">
@@ -38,6 +42,30 @@ const DealInfoCard: React.FC<DealInfoCardProps> = ({ deal }) => {
                 {deal.dealType === 'in-store' ? 'In-Store' : 
                  deal.dealType === 'online' ? 'Online' : 'Affiliate'}
               </span>
+              
+              {/* Sponsored Badge */}
+              {deal.sponsored && (
+                <Badge variant="default" className="flex items-center gap-1 bg-amber-500/90 text-white">
+                  <Star size={12} />
+                  <span>Sponsored</span>
+                </Badge>
+              )}
+              
+              {/* Business Badge */}
+              {isBusinessDeal && (
+                <Badge variant="default" className="flex items-center gap-1 bg-green-600/90 text-white">
+                  <Store size={12} />
+                  <span>Business</span>
+                </Badge>
+              )}
+              
+              {/* Unverified Badge */}
+              {!isBusinessDeal && deal.verified < 2 && (
+                <Badge variant="default" className="flex items-center gap-1 bg-amber-600/90 text-white">
+                  <Star size={12} />
+                  <span>Unverified</span>
+                </Badge>
+              )}
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold">{deal.title}</h1>
           </div>
