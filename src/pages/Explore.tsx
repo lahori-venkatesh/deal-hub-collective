@@ -8,6 +8,13 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Deal, DealFilter } from '@/utils/types';
 import { toast } from '@/components/ui/use-toast';
 import { SortOption, ViewMode } from '@/components/explore/types';
+import SearchBar from '@/components/explore/SearchBar';
+import DealTypeFilter from '@/components/explore/DealTypeFilter';
+import FilterPanel from '@/components/explore/FilterPanel';
+import GridView from '@/components/explore/GridView';
+import MapViewContainer from '@/components/explore/MapViewContainer';
+import RedemptionDialog from '@/components/explore/RedemptionDialog';
+import DealRedemptionDialog from '@/components/deal/DealRedemptionDialog';
 
 const sortOptions: { value: SortOption; label: string; icon: React.ElementType }[] = [
   { value: 'newest', label: 'Newest', icon: Clock },
@@ -153,10 +160,10 @@ const Explore: React.FC = () => {
         </div>
       </main>
       
-      <RedemptionDialog 
+      <DealRedemptionDialog 
         open={showRedemptionDialog}
-        onOpenChange={setShowRedemptionDialog}
-        onMarkRedeemed={markAsRedeemed}
+        setOpen={setShowRedemptionDialog}
+        markAsRedeemed={markAsRedeemed}
       />
       
       <BottomNavbar />
