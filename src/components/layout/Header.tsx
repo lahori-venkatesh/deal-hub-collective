@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Search, Bell, MapPin, User } from 'lucide-react';
-import { currentUser } from '@/utils/dealsData';
+import { currentUser } from '@/utils/userData'; // Changed from dealsData to userData
 import { cn } from '@/lib/utils';
 
 interface HeaderProps {

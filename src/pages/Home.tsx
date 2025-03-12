@@ -4,7 +4,8 @@ import { QrCode } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
 import AddDealButton from '@/components/ui/AddDealButton';
-import { mockDeals, dealCategories, currentUser } from '@/utils/dealsData';
+import { mockDeals, dealCategories } from '@/utils/dealsData';
+import { currentUser } from '@/utils/userData'; // Import currentUser from userData instead
 import { Button } from '@/components/ui/button';
 import NearbyDealsSection from '@/components/home/NearbyDealsSection';
 import PersonalizedDealsSection from '@/components/home/PersonalizedDealsSection';
