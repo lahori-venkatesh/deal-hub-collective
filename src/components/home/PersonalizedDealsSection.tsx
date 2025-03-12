@@ -15,6 +15,11 @@ const PersonalizedDealsSection: React.FC<PersonalizedDealsSectionProps> = ({
   currentUser,
   deals
 }) => {
+  // Don't render if no deals available
+  if (!deals || deals.length === 0) {
+    return null;
+  }
+
   // Get title based on user category
   const getSectionTitle = () => {
     if (currentUser.category === "student") return "Deals for Students";
@@ -30,9 +35,9 @@ const PersonalizedDealsSection: React.FC<PersonalizedDealsSectionProps> = ({
           <Award size={20} className="text-primary" />
           {getSectionTitle()}
         </h2>
-        <button className="text-sm text-primary flex items-center hover:underline">
+        <Link to="/explore" className="text-sm text-primary flex items-center hover:underline">
           View all <ChevronRight size={16} />
-        </button>
+        </Link>
       </div>
       
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">

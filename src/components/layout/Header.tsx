@@ -1,8 +1,8 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Search, Bell, MapPin } from 'lucide-react';
-import { currentUser } from '@/utils/mockData';
+import { Search, Bell, MapPin, User } from 'lucide-react';
+import { currentUser } from '@/utils/dealsData';
 import { cn } from '@/lib/utils';
 
 interface HeaderProps {
@@ -18,6 +18,12 @@ const Header: React.FC<HeaderProps> = ({
   currentLocation = "San Francisco, CA",
   transparent = false,
 }) => {
+  const [avatarError, setAvatarError] = React.useState(false);
+  
+  const handleAvatarError = () => {
+    setAvatarError(true);
+  };
+
   return (
     <header 
       className={cn(
@@ -71,16 +77,21 @@ const Header: React.FC<HeaderProps> = ({
           
           <Link to="/profile">
             <div className="flex items-center space-x-2">
-              <div className="w-7 h-7 rounded-full bg-muted overflow-hidden border border-border">
-                <img 
-                  src={currentUser.avatar} 
-                  alt={currentUser.name}
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-7 h-7 rounded-full bg-muted overflow-hidden border border-border flex items-center justify-center">
+                {!avatarError && currentUser?.avatar ? (
+                  <img 
+                    src={currentUser.avatar} 
+                    alt={currentUser.name}
+                    className="w-full h-full object-cover"
+                    onError={handleAvatarError}
+                  />
+                ) : (
+                  <User size={16} className="text-muted-foreground" />
+                )}
               </div>
               <div className="hidden md:flex items-center">
                 <span className="text-xs bg-primary/10 text-primary px-2 py-0.5 rounded-full">
-                  {currentUser.points} pts
+                  {currentUser?.points || 0} pts
                 </span>
               </div>
             </div>

@@ -10,7 +10,7 @@ import DealHeader from './deal/DealHeader';
 import DealActions from './deal/DealActions';
 import DealFooter from './deal/DealFooter';
 import { Badge } from '@/components/ui/badge';
-import { ShieldCheck, Star, AlertTriangle, Store } from 'lucide-react';
+import { ShieldCheck, AlertTriangle, Store, Star, ImageOff } from 'lucide-react';
 
 interface DealCardProps {
   deal: Deal;
@@ -28,7 +28,14 @@ const DealCard: React.FC<DealCardProps> = ({
   onRedeem
 }) => {
   // Determine if the deal is from a business account
-  const isBusinessDeal = deal.postedBy.accountType === 'business';
+  const isBusinessDeal = deal?.postedBy?.accountType === 'business';
+
+  // Image loading and error handling  
+  const [imageError, setImageError] = React.useState(false);
+
+  const handleImageError = () => {
+    setImageError(true);
+  };
   
   return (
     <Link 
@@ -42,12 +49,22 @@ const DealCard: React.FC<DealCardProps> = ({
     >
       <div className="relative">
         <div className="aspect-[5/3] bg-muted overflow-hidden">
-          <img 
-            src={deal.image} 
-            alt={deal.title}
-            className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-            loading="lazy"
-          />
+          {!imageError ? (
+            <img 
+              src={deal.image} 
+              alt={deal.title}
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
+              loading="lazy"
+              onError={handleImageError}
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center bg-muted">
+              <div className="flex flex-col items-center text-muted-foreground">
+                <ImageOff size={32} />
+                <span className="mt-2 text-sm">Image not available</span>
+              </div>
+            </div>
+          )}
         </div>
         
         <div className="absolute top-3 left-3 flex space-x-2">

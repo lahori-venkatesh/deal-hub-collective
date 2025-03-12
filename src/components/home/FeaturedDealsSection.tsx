@@ -12,6 +12,11 @@ const FeaturedDealsSection: React.FC<FeaturedDealsSectionProps> = ({
   deals,
   selectedCategory
 }) => {
+  // Don't render if no deals available
+  if (!deals || deals.length === 0) {
+    return null;
+  }
+
   return (
     <section className="mb-8 animate-slide-up" style={{ animationDelay: "700ms" }}>
       <div className="flex items-center justify-between mb-4">

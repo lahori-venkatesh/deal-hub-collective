@@ -4,7 +4,7 @@ import { QrCode } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
 import AddDealButton from '@/components/ui/AddDealButton';
-import { mockDeals, dealCategories, currentUser } from '@/utils/mockData';
+import { mockDeals, dealCategories, currentUser } from '@/utils/dealsData';
 import { Button } from '@/components/ui/button';
 import NearbyDealsSection from '@/components/home/NearbyDealsSection';
 import PersonalizedDealsSection from '@/components/home/PersonalizedDealsSection';
@@ -15,37 +15,53 @@ import FeaturedDealsSection from '@/components/home/FeaturedDealsSection';
 const Home: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("All Deals");
   
+  // Ensure mockDeals exists and has data
+  const deals = mockDeals || [];
+  
   // Filter deals by category if needed
   const filteredDeals = selectedCategory === "All Deals" 
-    ? mockDeals 
-    : mockDeals.filter(deal => deal.category === selectedCategory);
+    ? deals 
+    : deals.filter(deal => deal.category === selectedCategory);
   
   // Get personalized deals based on user category
   const getPersonalizedDeals = () => {
-    if (!currentUser.category) return mockDeals.slice(0, 3);
-    return mockDeals
+    if (!currentUser?.category || !deals.length) return [];
+    
+    return deals
       .filter(deal => deal.userCategories?.includes(currentUser.category as any))
       .slice(0, 3);
   };
 
   // Get category-specific deals
   const getStudentDeals = () => {
-    return mockDeals
+    if (!deals.length) return [];
+    
+    return deals
       .filter(deal => deal.userCategories?.includes("student"))
       .slice(0, 4);
   };
 
   const getFamilyDeals = () => {
-    return mockDeals
+    if (!deals.length) return [];
+    
+    return deals
       .filter(deal => deal.userCategories?.includes("family"))
       .slice(0, 4);
   };
 
   const getProfessionalDeals = () => {
-    return mockDeals
+    if (!deals.length) return [];
+    
+    return deals
       .filter(deal => deal.userCategories?.includes("professional"))
       .slice(0, 4);
   };
+
+  // Get the deals for each category
+  const studentDeals = getStudentDeals();
+  const familyDeals = getFamilyDeals();
+  const professionalDeals = getProfessionalDeals();
+  const personalizedDeals = getPersonalizedDeals();
   
   return (
     <div className="min-h-screen bg-background pb-16">
@@ -70,34 +86,40 @@ const Home: React.FC = () => {
             Discover crowd-sourced deals, verified by your community.
           </p>
           
-          {/* Map section - Moved to the top */}
+          {/* Map section */}
           <NearbyDealsSection />
           
           {/* Personalized Deals Section */}
-          <PersonalizedDealsSection 
-            currentUser={currentUser}
-            deals={getPersonalizedDeals()}
-          />
+          {personalizedDeals.length > 0 && (
+            <PersonalizedDealsSection 
+              currentUser={currentUser}
+              deals={personalizedDeals}
+            />
+          )}
           
           {/* Trending Sections */}
           <TrendingSection 
-            studentDeals={getStudentDeals()}
-            familyDeals={getFamilyDeals()}
-            professionalDeals={getProfessionalDeals()}
+            studentDeals={studentDeals}
+            familyDeals={familyDeals}
+            professionalDeals={professionalDeals}
           />
           
           {/* Categories */}
-          <CategoriesSection 
-            categories={dealCategories}
-            selectedCategory={selectedCategory}
-            onSelectCategory={setSelectedCategory}
-          />
+          {dealCategories && dealCategories.length > 0 && (
+            <CategoriesSection 
+              categories={dealCategories}
+              selectedCategory={selectedCategory}
+              onSelectCategory={setSelectedCategory}
+            />
+          )}
           
           {/* Featured deals */}
-          <FeaturedDealsSection 
-            deals={filteredDeals}
-            selectedCategory={selectedCategory}
-          />
+          {filteredDeals.length > 0 && (
+            <FeaturedDealsSection 
+              deals={filteredDeals}
+              selectedCategory={selectedCategory}
+            />
+          )}
         </div>
       </main>
       

@@ -16,6 +16,16 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
   familyDeals,
   professionalDeals
 }) => {
+  // Check if we have deals for each category and handle empty case
+  const hasStudentDeals = studentDeals && studentDeals.length > 0;
+  const hasFamilyDeals = familyDeals && familyDeals.length > 0;
+  const hasProfessionalDeals = professionalDeals && professionalDeals.length > 0;
+
+  // If all sections are empty, don't render anything
+  if (!hasStudentDeals && !hasFamilyDeals && !hasProfessionalDeals) {
+    return null;
+  }
+
   return (
     <section className="mb-8 animate-slide-up" style={{ animationDelay: "250ms" }}>
       <div className="flex items-center justify-between mb-4">
@@ -26,46 +36,52 @@ const TrendingSection: React.FC<TrendingSectionProps> = ({
       </div>
       
       {/* Students Love These */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center">
-            <GraduationCap size={18} className="mr-2 text-primary" />
-            <h3 className="font-medium">Students Love These</h3>
+      {hasStudentDeals && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <GraduationCap size={18} className="mr-2 text-primary" />
+              <h3 className="font-medium">Students Love These</h3>
+            </div>
+            <Link to="/explore?category=student" className="text-sm text-primary flex items-center hover:underline">
+              View all <ChevronRight size={16} />
+            </Link>
           </div>
-          <Link to="/explore?category=student" className="text-sm text-primary flex items-center hover:underline">
-            View all <ChevronRight size={16} />
-          </Link>
+          <CategoryCarousel deals={studentDeals} />
         </div>
-        <CategoryCarousel deals={studentDeals} />
-      </div>
+      )}
       
       {/* Top Savings for Families */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center">
-            <Users size={18} className="mr-2 text-primary" />
-            <h3 className="font-medium">Top Savings for Families</h3>
+      {hasFamilyDeals && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <Users size={18} className="mr-2 text-primary" />
+              <h3 className="font-medium">Top Savings for Families</h3>
+            </div>
+            <Link to="/explore?category=family" className="text-sm text-primary flex items-center hover:underline">
+              View all <ChevronRight size={16} />
+            </Link>
           </div>
-          <Link to="/explore?category=family" className="text-sm text-primary flex items-center hover:underline">
-            View all <ChevronRight size={16} />
-          </Link>
+          <CategoryCarousel deals={familyDeals} />
         </div>
-        <CategoryCarousel deals={familyDeals} />
-      </div>
+      )}
       
       {/* Office Goer Specials */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center">
-            <Briefcase size={18} className="mr-2 text-primary" />
-            <h3 className="font-medium">Office Goer Specials</h3>
+      {hasProfessionalDeals && (
+        <div className="mb-8">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center">
+              <Briefcase size={18} className="mr-2 text-primary" />
+              <h3 className="font-medium">Office Goer Specials</h3>
+            </div>
+            <Link to="/explore?category=professional" className="text-sm text-primary flex items-center hover:underline">
+              View all <ChevronRight size={16} />
+            </Link>
           </div>
-          <Link to="/explore?category=professional" className="text-sm text-primary flex items-center hover:underline">
-            View all <ChevronRight size={16} />
-          </Link>
+          <CategoryCarousel deals={professionalDeals} />
         </div>
-        <CategoryCarousel deals={professionalDeals} />
-      </div>
+      )}
     </section>
   );
 };
