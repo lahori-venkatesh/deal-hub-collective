@@ -1,4 +1,3 @@
-
 import { Deal, User, Notification } from './types';
 
 // Categories for deal filtering
@@ -148,7 +147,7 @@ export const mockDeals: Deal[] = [
       address: "123 Main St, Bangalore",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-08-30T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-01T10:00:00Z",
     postedBy: {
       id: "user1",
@@ -175,7 +174,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-09-15T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-03T14:20:00Z",
     postedBy: {
       id: "user2",
@@ -201,7 +200,7 @@ export const mockDeals: Deal[] = [
       address: "The Grand Hotel, MG Road, Bangalore",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-08-27T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-04T11:15:00Z",
     postedBy: {
       id: "user3",
@@ -227,7 +226,7 @@ export const mockDeals: Deal[] = [
       address: "PVR Koramangala, Bangalore",
       coordinates: { lat: 12.9349, lng: 77.6205 }
     },
-    expiresAt: "2023-09-30T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-05T15:30:00Z",
     postedBy: {
       id: "user2",
@@ -254,7 +253,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-09-20T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-06T12:45:00Z",
     postedBy: {
       id: "user4",
@@ -280,7 +279,7 @@ export const mockDeals: Deal[] = [
       address: "The Dessert Factory, Indiranagar, Bangalore",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-09-10T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-07T16:00:00Z",
     postedBy: {
       id: "user1",
@@ -306,7 +305,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-09-05T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-08T13:30:00Z",
     postedBy: {
       id: "user5",
@@ -332,7 +331,7 @@ export const mockDeals: Deal[] = [
       address: "Cinepolis, JP Nagar, Bangalore",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-09-25T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-09T10:00:00Z",
     postedBy: {
       id: "user2",
@@ -358,7 +357,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-09-30T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-10T11:45:00Z",
     postedBy: {
       id: "user3",
@@ -385,7 +384,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-09-15T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-10T09:15:00Z",
     postedBy: {
       id: "user5",
@@ -413,7 +412,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-09-10T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-11T14:30:00Z",
     postedBy: {
       id: "user6",
@@ -441,7 +440,7 @@ export const mockDeals: Deal[] = [
       address: "Online",
       coordinates: { lat: 12.9716, lng: 77.5946 }
     },
-    expiresAt: "2023-08-15T23:59:59Z",
+    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
     createdAt: "2023-08-12T10:00:00Z",
     postedBy: {
       id: "user7",
@@ -495,3 +494,4 @@ export const mockNotifications: Notification[] = [
     relatedDealId: "deal3"
   }
 ];
+

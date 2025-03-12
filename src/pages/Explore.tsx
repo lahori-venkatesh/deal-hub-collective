@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Compass, Filter, Clock, MapPin, TrendingUp, Store, Globe, ExternalLink } from 'lucide-react';
 import Header from '@/components/layout/Header';
@@ -9,12 +8,6 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Deal, DealFilter } from '@/utils/types';
 import { toast } from '@/components/ui/use-toast';
 import { SortOption, ViewMode } from '@/components/explore/types';
-import SearchBar from '@/components/explore/SearchBar';
-import DealTypeFilter from '@/components/explore/DealTypeFilter';
-import FilterPanel from '@/components/explore/FilterPanel';
-import GridView from '@/components/explore/GridView';
-import MapViewContainer from '@/components/explore/MapViewContainer';
-import RedemptionDialog from '@/components/explore/RedemptionDialog';
 
 const sortOptions: { value: SortOption; label: string; icon: React.ElementType }[] = [
   { value: 'newest', label: 'Newest', icon: Clock },
@@ -33,14 +26,11 @@ const Explore: React.FC = () => {
   const [selectedDeal, setSelectedDeal] = useState<Deal | null>(null);
   const [showRedemptionDialog, setShowRedemptionDialog] = useState(false);
   
-  // Filter and sort deals
   const filteredDeals = mockDeals.filter(deal => {
-    // Filter by deal type
     if (selectedDealType !== 'all' && deal.dealType !== selectedDealType) {
       return false;
     }
     
-    // Filter by search query
     if (searchQuery && !deal.title.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !deal.store.toLowerCase().includes(searchQuery.toLowerCase()) &&
         !deal.description.toLowerCase().includes(searchQuery.toLowerCase()) &&
@@ -50,7 +40,6 @@ const Explore: React.FC = () => {
       return false;
     }
     
-    // Filter by category
     if (selectedCategory && deal.category !== selectedCategory) {
       return false;
     }
@@ -58,7 +47,6 @@ const Explore: React.FC = () => {
     return true;
   });
   
-  // Sort deals
   const sortedDeals = [...filteredDeals].sort((a, b) => {
     switch (sortBy) {
       case 'newest':
@@ -68,8 +56,6 @@ const Explore: React.FC = () => {
       case 'popular':
         return b.verified - a.verified;
       case 'distance':
-        // In a real app, this would calculate actual distance from user
-        // For now, we'll just use a random value
         return Math.random() - 0.5;
       default:
         return 0;
@@ -86,7 +72,6 @@ const Explore: React.FC = () => {
     if (deal.dealType === 'in-store') {
       setShowRedemptionDialog(true);
     } else if (deal.dealType === 'online') {
-      // Copy promo code and open website
       if (deal.promoCode) {
         navigator.clipboard.writeText(deal.promoCode);
         toast({
@@ -95,10 +80,8 @@ const Explore: React.FC = () => {
         });
       }
       
-      // Open website
       window.open(deal.affiliateUrl || `https://${deal.platform?.toLowerCase()}.com`, '_blank');
     } else if (deal.dealType === 'affiliate') {
-      // Direct redirect with auto-applied discount
       window.open(deal.affiliateUrl, '_blank');
       toast({
         title: "Redirecting with discount",
@@ -128,7 +111,6 @@ const Explore: React.FC = () => {
             </div>
           </div>
           
-          {/* Search bar */}
           <SearchBar 
             searchQuery={searchQuery}
             setSearchQuery={setSearchQuery}
@@ -136,13 +118,11 @@ const Explore: React.FC = () => {
             setShowFilters={setShowFilters}
           />
           
-          {/* Deal Type Filter Tabs */}
           <DealTypeFilter 
             selectedDealType={selectedDealType}
             setSelectedDealType={setSelectedDealType}
           />
           
-          {/* Filter panel */}
           <FilterPanel 
             showFilters={showFilters}
             selectedCategory={selectedCategory}
@@ -152,7 +132,6 @@ const Explore: React.FC = () => {
             sortOptions={sortOptions}
           />
           
-          {/* View mode tabs */}
           <Tabs defaultValue="grid" value={viewMode} onValueChange={(value) => setViewMode(value as ViewMode)} className="mb-6">
             <TabsList className="grid w-full max-w-[200px] grid-cols-2">
               <TabsTrigger value="grid">Grid View</TabsTrigger>
@@ -174,7 +153,6 @@ const Explore: React.FC = () => {
         </div>
       </main>
       
-      {/* QR Code Redemption Dialog */}
       <RedemptionDialog 
         open={showRedemptionDialog}
         onOpenChange={setShowRedemptionDialog}
