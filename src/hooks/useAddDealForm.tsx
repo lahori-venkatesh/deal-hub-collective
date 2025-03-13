@@ -1,6 +1,5 @@
-
 import { useState, useEffect } from 'react';
-import { toast } from '@/components/ui/toast';
+import { toast } from "sonner";
 import { DealFilter } from '@/utils/types';
 import { useNavigate } from 'react-router-dom';
 

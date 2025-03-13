@@ -108,12 +108,10 @@ const AddDealForm: React.FC<AddDealFormProps> = ({
           location={location}
           setLocation={setLocation}
           locationVerified={locationVerified}
-          setLocationVerified={setLocationVerified}
+          verifyLocation={verifyLocation}
           qrCodeImage={qrCodeImage}
           userLocation={userLocation}
-          verifyLocation={verifyLocation}
           handleQRCodeUpload={handleQRCodeUpload}
-          setQrCodeImage={setQrCodeImage}
         />
       )}
       
@@ -124,7 +122,6 @@ const AddDealForm: React.FC<AddDealFormProps> = ({
           promoCode={promoCode}
           setPromoCode={setPromoCode}
           isDuplicateCode={isDuplicateCode}
-          setIsDuplicateCode={setIsDuplicateCode}
           sourceUrl={sourceUrl}
           setSourceUrl={setSourceUrl}
           verifyPromoCode={verifyPromoCode}
