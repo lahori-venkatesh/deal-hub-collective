@@ -1,342 +1,297 @@
-
 import { Deal } from './types';
-import { formatTimeRemaining, getExpiryColor } from './utils';
 
-// Categories for deal filtering
 export const dealCategories = [
-  "All Deals",
-  "Food & Dining",
-  "Fashion",
-  "Electronics",
-  "Entertainment",
-  "Home & Garden",
-  "Travel",
-  "Beauty",
-  "Sports",
-  "Education",
-  "Healthcare"
+  { name: 'Electronics', icon: '📱' },
+  { name: 'Fashion', icon: '👕' },
+  { name: 'Groceries', icon: '🛒' },
+  { name: 'Dining', icon: '🍔' },
+  { name: 'Travel', icon: '✈️' },
+  { name: 'Entertainment', icon: '🎬' },
+  { name: 'Beauty', icon: '💄' },
+  { name: 'Home', icon: '🏠' }
 ];
+
+// Helper function to add days to a date
+const addDays = (date: Date, days: number): Date => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
 
 // Mock deals data
 export const mockDeals: Deal[] = [
   {
     id: "deal1",
     title: "50% Off on Pizza",
-    description: "Get 50% off on all pizzas at Domino's Pizza. Valid for dine-in and takeaway only.",
-    discount: "50%",
+    description: "Get 50% off on all large pizzas. Valid only on weekdays. Minimum order value of ₹500. Cannot be combined with other offers or discounts.",
+    discount: "50% Off",
     store: "Domino's Pizza",
-    category: "Food & Dining",
+    category: "Dining",
     dealType: "in-store",
-    promoCode: "PIZZA50",
     location: {
-      address: "123 Main St, Bangalore",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
+      address: "Koramangala, Bangalore",
+      coordinates: {
+        lat: 12.9352,
+        lng: 77.6245
+      }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 7).toISOString(),
-    createdAt: "2023-08-01T10:00:00Z",
+    expiresAt: addDays(new Date(), 7).toISOString(),
+    createdAt: addDays(new Date(), -2).toISOString(),
     postedBy: {
-      id: "user1",
-      name: "Rahul S",
-      avatar: "/assets/avatars/user1.jpg",
-      accountType: "business" // Business posted deal
+      id: "user123",
+      name: "John Doe",
+      avatar: "/assets/avatars/user1.jpg"
     },
-    verified: 5,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    sponsored: true
+    verified: 15,
+    flagged: 2,
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+    redemptionId: "PIZZA50",
+    verificationToken: "abc123",
+    verificationUrl: "https://dealhub.app/verify/abc123",
+    isVerifiedByBusiness: true,
+    userCategories: ["student", "family"]
   },
   {
     id: "deal2",
     title: "Flat 30% Off on Apparels",
-    description: "Get a flat 30% off on all clothing and accessories at Lifestyle Stores. Offer valid on online and in-store purchases.",
-    discount: "30%",
-    store: "Lifestyle Stores",
+    description: "Get flat 30% off on all apparels. Valid on all products. Minimum purchase of ₹1500 required. Not valid on already discounted items.",
+    discount: "30% Off",
+    store: "H&M",
     category: "Fashion",
-    dealType: "online",
-    promoCode: "STYLE30",
-    affiliateUrl: "https://www.lifestylestores.com/offers",
+    dealType: "in-store",
     location: {
-      address: "Online",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
+      address: "Phoenix Mall, Mumbai",
+      coordinates: {
+        lat: 19.0760,
+        lng: 72.8777
+      }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 14).toISOString(),
-    createdAt: "2023-08-03T14:20:00Z",
+    expiresAt: addDays(new Date(), 14).toISOString(),
+    createdAt: addDays(new Date(), -5).toISOString(),
     postedBy: {
-      id: "user2",
-      name: "Priya Sharma",
-      avatar: "/assets/avatars/user2.jpg",
-      accountType: "user"
+      id: "user456",
+      name: "Sarah Wilson",
+      avatar: "/assets/avatars/user2.jpg"
     },
-    verified: 7,
+    verified: 28,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1485230895905-ec338641421b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    platform: "Lifestyle Online"
+    image: "https://images.unsplash.com/photo-1551232864-3f0890e580d9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2344&q=80",
+    redemptionId: "APPARELS30",
+    verificationToken: "def456",
+    verificationUrl: "https://dealhub.app/verify/def456",
+    isVerifiedByBusiness: false,
+    userCategories: ["student", "professional"]
   },
   {
     id: "deal3",
     title: "Weekend Buffet at ₹999",
-    description: "Enjoy a lavish weekend buffet at The Grand Hotel for just ₹999 per person. Offer valid on Saturday and Sunday.",
+    description: "Enjoy our special weekend buffet at just ₹999 per person. Offer includes a wide variety of dishes. Offer valid only on weekends (Saturday and Sunday).",
     discount: "₹999",
     store: "The Grand Hotel",
-    category: "Food & Dining",
+    category: "Dining",
     dealType: "in-store",
-    promoCode: "None",
     location: {
-      address: "The Grand Hotel, MG Road, Bangalore",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
+      address: "MG Road, Bangalore",
+      coordinates: {
+        lat: 12.9716,
+        lng: 77.5946
+      }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 10).toISOString(),
-    createdAt: "2023-08-04T11:15:00Z",
+    expiresAt: addDays(new Date(), 21).toISOString(),
+    createdAt: addDays(new Date(), -10).toISOString(),
     postedBy: {
-      id: "user3",
-      name: "Amit Kumar",
-      avatar: "/assets/avatars/user3.jpg",
-      accountType: "user"
+      id: "business456",
+      name: "Acme Corp",
+      avatar: "/assets/avatars/business1.jpg",
+      accountType: "business"
     },
-    verified: 6,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1551782450-a2132b4ba212?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
+    verified: 42,
+    flagged: 1,
+    image: "https://images.unsplash.com/photo-1517248135469-4fe796d424dd?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+    redemptionId: null,
+    userCategories: ["family", "professional"]
   },
   {
     id: "deal4",
-    title: "Buy 1 Get 1 Free on Movie Tickets",
-    description: "Buy one movie ticket and get another one free at PVR Cinemas. Valid for all shows from Monday to Thursday.",
-    discount: "Buy 1 Get 1",
-    store: "PVR Cinemas",
-    category: "Entertainment",
-    dealType: "online",
-    promoCode: "BOGO2023",
-    affiliateUrl: "https://www.pvrcinemas.com/offers",
-    location: {
-      address: "PVR Koramangala, Bangalore",
-      coordinates: { lat: 12.9349, lng: 77.6205 }
-    },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 5).toISOString(),
-    createdAt: "2023-08-05T15:30:00Z",
-    postedBy: {
-      id: "user2",
-      name: "Priya M",
-      avatar: "/assets/avatars/user2.jpg",
-      accountType: "user" // User posted deal
-    },
-    verified: 1, // Low verification score
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1627133900223-aabebbe9566b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    platform: "PVR App"
-  },
-  {
-    id: "deal5",
-    title: "Flat 40% Off on Electronics",
-    description: "Get a flat 40% off on all electronics at Croma. Offer valid on online and in-store purchases.",
-    discount: "40%",
-    store: "Croma",
+    title: "Upto 60% Off on Electronics",
+    description: "Get upto 60% off on a wide range of electronics products. Offer valid on select items only. Visit our website for more details.",
+    discount: "Upto 60% Off",
+    store: "Amazon",
     category: "Electronics",
     dealType: "online",
-    promoCode: "ELEC40",
-    affiliateUrl: "https://www.croma.com/offers",
-    location: {
-      address: "Online",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
-    },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 20).toISOString(),
-    createdAt: "2023-08-06T12:45:00Z",
+    promoCode: "ELEC60",
+    platform: "Amazon",
+    expiresAt: addDays(new Date(), 30).toISOString(),
+    createdAt: addDays(new Date(), -15).toISOString(),
     postedBy: {
-      id: "user4",
-      name: "Sneha Reddy",
-      avatar: "/assets/avatars/user4.jpg",
-      accountType: "user"
-    },
-    verified: 9,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1584768176383-1451985588ca?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    platform: "Croma Online"
-  },
-  {
-    id: "deal6",
-    title: "Free Dessert with Every Meal",
-    description: "Enjoy a complimentary dessert with every meal at The Dessert Factory. Offer valid on all days of the week.",
-    discount: "Free Dessert",
-    store: "The Dessert Factory",
-    category: "Food & Dining",
-    dealType: "in-store",
-    promoCode: "None",
-    location: {
-      address: "The Dessert Factory, Indiranagar, Bangalore",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
-    },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 15).toISOString(),
-    createdAt: "2023-08-07T16:00:00Z",
-    postedBy: {
-      id: "user1",
-      name: "Rahul S",
-      avatar: "/assets/avatars/user1.jpg",
-      accountType: "user"
-    },
-    verified: 4,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1563720239558-9e94790c3542?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-  },
-  {
-    id: "deal7",
-    title: "Up to 60% Off on Footwear",
-    description: "Get up to 60% off on all footwear at Bata. Offer valid on online and in-store purchases.",
-    discount: "Up to 60%",
-    store: "Bata",
-    category: "Fashion",
-    dealType: "online",
-    promoCode: "BATA60",
-    affiliateUrl: "https://www.bata.in/offers",
-    location: {
-      address: "Online",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
-    },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 30).toISOString(),
-    createdAt: "2023-08-08T13:30:00Z",
-    postedBy: {
-      id: "user5",
-      name: "Neha Patel",
-      avatar: "/assets/avatars/user5.jpg",
-      accountType: "user"
-    },
-    verified: 3,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    platform: "Bata Online"
-  },
-  {
-    id: "deal8",
-    title: "Free Popcorn with Every Movie Ticket",
-    description: "Get a complimentary popcorn with every movie ticket purchase at Cinepolis. Offer valid on all shows.",
-    discount: "Free Popcorn",
-    store: "Cinepolis",
-    category: "Entertainment",
-    dealType: "in-store",
-    promoCode: "None",
-    location: {
-      address: "Cinepolis, JP Nagar, Bangalore",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
-    },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 8).toISOString(),
-    createdAt: "2023-08-09T10:00:00Z",
-    postedBy: {
-      id: "user2",
-      name: "Priya Sharma",
-      avatar: "/assets/avatars/user2.jpg",
-      accountType: "user"
-    },
-    verified: 8,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1578560904687-64d99a18d93b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80"
-  },
-  {
-    id: "deal9",
-    title: "Flat 25% Off on Home Decor",
-    description: "Get a flat 25% off on all home decor items at Home Centre. Offer valid on online and in-store purchases.",
-    discount: "25%",
-    store: "Home Centre",
-    category: "Home & Garden",
-    dealType: "online",
-    promoCode: "HOME25",
-    affiliateUrl: "https://www.homecentre.in/offers",
-    location: {
-      address: "Online",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
-    },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 12).toISOString(),
-    createdAt: "2023-08-10T11:45:00Z",
-    postedBy: {
-      id: "user3",
-      name: "Amit Kumar",
-      avatar: "/assets/avatars/user3.jpg",
-      accountType: "user"
-    },
-    verified: 5,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1567016546863-c50149632353?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    platform: "Home Centre Online"
-  },
-  {
-    id: "deal10",
-    title: "Summer Fashion Sale - 70% Off",
-    description: "Enjoy up to 70% off on summer fashion collection including clothing, accessories, and footwear.",
-    discount: "Up to 70%",
-    store: "Myntra",
-    category: "Fashion",
-    dealType: "online",
-    promoCode: "SUMMER70",
-    affiliateUrl: "https://www.myntra.com/summer-sale",
-    location: {
-      address: "Online",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
-    },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 25).toISOString(),
-    createdAt: "2023-08-10T09:15:00Z",
-    postedBy: {
-      id: "user5",
-      name: "Fashion Hub",
-      avatar: "/assets/avatars/business1.jpg",
-      accountType: "business" // Business posted deal
-    },
-    verified: 8,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    platform: "Myntra",
-    sponsored: true
-  },
-  {
-    id: "deal11",
-    title: "Monsoon Special - 40% Off",
-    description: "Enjoy flat 40% off on all rainwear and accessories. Stay dry and stylish this monsoon season.",
-    discount: "40% Off",
-    store: "Amazon",
-    category: "Fashion",
-    dealType: "online",
-    promoCode: "RAINY40",
-    affiliateUrl: "https://www.amazon.in/monsoon-sale",
-    location: {
-      address: "Online",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
-    },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 18).toISOString(),
-    createdAt: "2023-08-11T14:30:00Z",
-    postedBy: {
-      id: "user6",
-      name: "RainWear Store",
+      id: "business789",
+      name: "ElectroStore",
       avatar: "/assets/avatars/business2.jpg",
       accountType: "business"
     },
-    verified: 7,
-    flagged: 0,
-    image: "https://images.unsplash.com/photo-1534161394100-49c9939f11d8?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    platform: "Amazon",
-    sponsored: false
+    verified: 65,
+    flagged: 3,
+    image: "https://images.unsplash.com/photo-1496181133206-80fa9e748b63?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+    redemptionId: null,
+    userCategories: ["student", "professional"]
   },
   {
-    id: "deal12",
-    title: "Independence Day Offer - Flat 50% Off",
-    description: "Celebrate Independence Day with a flat 50% off on all products. Limited time offer.",
-    discount: "50% Off",
-    store: "Flipkart",
-    category: "All",
-    dealType: "online",
-    promoCode: "IND50",
-    affiliateUrl: "https://www.flipkart.com/independence-day-sale",
+    id: "deal5",
+    title: "Buy 1 Get 1 Free on Selected Items",
+    description: "Buy one and get one free on selected clothing items. Offer valid on select products only. Visit our store for more details.",
+    discount: "Buy 1 Get 1 Free",
+    store: "Lifestyle",
+    category: "Fashion",
+    dealType: "in-store",
     location: {
-      address: "Online",
-      coordinates: { lat: 12.9716, lng: 77.5946 }
+      address: "Indiranagar, Bangalore",
+      coordinates: {
+        lat: 12.9716,
+        lng: 77.5946
+      }
     },
-    expiresAt: new Date(Date.now() + 3600000 * 24 * 21).toISOString(),
-    createdAt: "2023-08-12T10:00:00Z",
+    expiresAt: addDays(new Date(), 10).toISOString(),
+    createdAt: addDays(new Date(), -3).toISOString(),
     postedBy: {
-      id: "user7",
-      name: "Flipkart Deals",
+      id: "user789",
+      name: "Priya Sharma",
+      avatar: "/assets/avatars/user3.jpg"
+    },
+    verified: 22,
+    flagged: 0,
+    image: "https://images.unsplash.com/photo-1483985988355-763728e1935b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+    redemptionId: "BOGO",
+    userCategories: ["family"]
+  },
+  {
+    id: "deal6",
+    title: "Flat 20% Off on All Products",
+    description: "Get a flat 20% discount on all products. This offer is valid for both in-store and online purchases. Use code SUMMER20 at checkout.",
+    discount: "20% Off",
+    store: "Myntra",
+    category: "Fashion",
+    dealType: "online",
+    promoCode: "SUMMER20",
+    platform: "Myntra",
+    expiresAt: addDays(new Date(), 25).toISOString(),
+    createdAt: addDays(new Date(), -8).toISOString(),
+    postedBy: {
+      id: "business101",
+      name: "FashionHub",
       avatar: "/assets/avatars/business3.jpg",
       accountType: "business"
     },
-    verified: 9,
+    verified: 50,
+    flagged: 2,
+    image: "https://images.unsplash.com/photo-1514846325693-841b28358e15?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2215&q=80",
+    redemptionId: null,
+    userCategories: ["student", "family", "professional"]
+  },
+  {
+    id: "deal7",
+    title: "Free Dessert with Every Meal",
+    description: "Enjoy a complimentary dessert with every meal purchased. This offer is valid for dine-in customers only. Limited time offer.",
+    discount: "Free Dessert",
+    store: "The Dessert Spot",
+    category: "Dining",
+    dealType: "in-store",
+    location: {
+      address: "Jayanagar, Bangalore",
+      coordinates: {
+        lat: 12.9279,
+        lng: 77.5825
+      }
+    },
+    expiresAt: addDays(new Date(), 5).toISOString(),
+    createdAt: addDays(new Date(), -1).toISOString(),
+    postedBy: {
+      id: "user202",
+      name: "David Lee",
+      avatar: "/assets/avatars/user4.jpg"
+    },
+    verified: 18,
     flagged: 0,
-    image: "https://images.unsplash.com/photo-1555215695-3004980ad54e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80",
-    platform: "Flipkart",
-    sponsored: true
+    image: "https://images.unsplash.com/photo-1551782450-a2132b4ba212?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+    redemptionId: "FREEDESSERT",
+    userCategories: ["family", "student"]
+  },
+  {
+    id: "deal8",
+    title: "Up to 70% off on Winter Collection",
+    description: "Get ready for winter with up to 70% off on our exclusive winter collection. Offer valid online and in-store. Limited stock available.",
+    discount: "Up to 70% off",
+    store: "WinterWear",
+    category: "Fashion",
+    dealType: "online",
+    promoCode: "WINTER70",
+    platform: "WinterWear",
+    expiresAt: addDays(new Date(), 35).toISOString(),
+    createdAt: addDays(new Date(), -12).toISOString(),
+    postedBy: {
+      id: "business303",
+      name: "Snowflake Fashions",
+      avatar: "/assets/avatars/business4.jpg",
+      accountType: "business"
+    },
+    verified: 70,
+    flagged: 5,
+    image: "https://images.unsplash.com/photo-1485230895905-ec35ba43b698?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+    redemptionId: null,
+    userCategories: ["student", "family", "professional"]
+  },
+  {
+    id: "deal9",
+    title: "Flat 40% Off on All Orders",
+    description: "Get a flat 40% discount on all orders. This offer is valid for both in-store and online purchases. Use code SPRING40 at checkout.",
+    discount: "40% Off",
+    store: "StyleCraze",
+    category: "Fashion",
+    dealType: "online",
+    promoCode: "SPRING40",
+    platform: "StyleCraze",
+    expiresAt: addDays(new Date(), 20).toISOString(),
+    createdAt: addDays(new Date(), -6).toISOString(),
+    postedBy: {
+      id: "business404",
+      name: "Chic Boutique",
+      avatar: "/assets/avatars/business5.jpg",
+      accountType: "business"
+    },
+    verified: 55,
+    flagged: 1,
+    image: "https://images.unsplash.com/photo-1543168278-536f5e2c9f3a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2340&q=80",
+    redemptionId: null,
+    userCategories: ["student", "family", "professional"]
+  },
+  {
+    id: "deal10",
+    title: "Free Shipping on Orders Over ₹500",
+    description: "Enjoy free shipping on all orders over ₹500. This offer is valid for online purchases only. No promo code required.",
+    discount: "Free Shipping",
+    store: "eShop",
+    category: "Electronics",
+    dealType: "online",
+    platform: "eShop",
+    expiresAt: addDays(new Date(), 15).toISOString(),
+    createdAt: addDays(new Date(), -4).toISOString(),
+    postedBy: {
+      id: "business505",
+      name: "TechWorld",
+      avatar: "/assets/avatars/business6.jpg",
+      accountType: "business"
+    },
+    verified: 60,
+    flagged: 0,
+    image: "https://images.unsplash.com/photo-1584398216243-79975ca9594a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2205&q=80",
+    redemptionId: null,
+    userCategories: ["student", "professional"]
   }
 ];
+
+// Filter out deals that are expired for more than 7 days
+export const activeDeals = mockDeals.filter(deal => {
+  const expiryDate = new Date(deal.expiresAt);
+  const now = new Date();
+  const diffInDays = (expiryDate.getTime() - now.getTime()) / (1000 * 60 * 60 * 24);
+  return diffInDays > -7;
+});

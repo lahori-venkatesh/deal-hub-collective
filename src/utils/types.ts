@@ -1,4 +1,3 @@
-
 export interface Deal {
   id: string;
   title: string;
@@ -10,6 +9,8 @@ export interface Deal {
   promoCode?: string;
   affiliateUrl?: string;
   redemptionId?: string;
+  verificationToken?: string; // New field for verification
+  verificationUrl?: string; // New field for verification URL
   location: {
     address: string;
     coordinates: {
@@ -33,6 +34,7 @@ export interface Deal {
   isRedeemed?: boolean;
   receiptVerified?: boolean;
   sponsored?: boolean; // Added this field for sponsored deals
+  isVerifiedByBusiness?: boolean; // New field to track if a business has verified the deal
 }
 
 export interface User {
@@ -100,4 +102,11 @@ export interface OnboardingState {
   businessEmail: string;
   businessContact: string;
   termsAccepted: boolean;
+}
+
+export interface VerificationResult {
+  success: boolean;
+  message: string;
+  dealId?: string;
+  storeName?: string;
 }

@@ -1,10 +1,10 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { toast } from '@/components/ui/use-toast';
 import Header from '@/components/layout/Header';
 import BottomNavbar from '@/components/layout/BottomNavbar';
-import { mockDeals } from '@/utils/mockData';
+import { mockDeals } from '@/utils/mockDeals';
 import DealHeader from '@/components/deal/DealHeader';
 import DealInfoCard from '@/components/deal/DealInfoCard';
 import DealDiscountSection from '@/components/deal/DealDiscountSection';
@@ -12,6 +12,7 @@ import DealDescription from '@/components/deal/DealDescription';
 import DealActionButtons from '@/components/deal/DealActionButtons';
 import DealRedemptionDialog from '@/components/deal/DealRedemptionDialog';
 import ReceiptUploadDialog from '@/components/deal/ReceiptUploadDialog';
+import { Deal } from '@/utils/types';
 
 const DealDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -23,11 +24,34 @@ const DealDetails: React.FC = () => {
   const [isRedeemed, setIsRedeemed] = useState(false);
   const [showReceiptUpload, setShowReceiptUpload] = useState(false);
   const [receiptUploaded, setReceiptUploaded] = useState(false);
+  const [currentDeal, setCurrentDeal] = useState<Deal | null>(null);
   
-  // Find the deal in our mock data
-  const deal = mockDeals.find(d => d.id === id);
+  // Find the deal in our mock data and generate verification URL if needed
+  useEffect(() => {
+    const deal = mockDeals.find(d => d.id === id);
+    
+    if (deal) {
+      // Generate verification token and URL if it's an in-store deal and doesn't already have one
+      if (deal.dealType === 'in-store' && !deal.verificationToken) {
+        // In a real app, this would be generated on the server
+        const token = Math.random().toString(36).substring(2, 15);
+        const verificationUrl = `${window.location.origin}/verify/${token}`;
+        
+        // Update the deal with the verification info
+        const updatedDeal = {
+          ...deal,
+          verificationToken: token,
+          verificationUrl: verificationUrl
+        };
+        
+        setCurrentDeal(updatedDeal);
+      } else {
+        setCurrentDeal(deal);
+      }
+    }
+  }, [id]);
   
-  if (!deal) {
+  if (!currentDeal) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -67,11 +91,11 @@ const DealDetails: React.FC = () => {
   };
 
   const copyPromoCode = () => {
-    if (deal.promoCode) {
-      navigator.clipboard.writeText(deal.promoCode);
+    if (currentDeal.promoCode) {
+      navigator.clipboard.writeText(currentDeal.promoCode);
       toast({
         title: "Code Copied!",
-        description: `${deal.promoCode} has been copied to your clipboard.`,
+        description: `${currentDeal.promoCode} has been copied to your clipboard.`,
       });
     }
   };
@@ -84,13 +108,13 @@ const DealDetails: React.FC = () => {
     setIsRedeemed(true);
     setShowQRCode(false);
     
-    if (deal.dealType === 'in-store') {
+    if (currentDeal.dealType === 'in-store') {
       toast({
         title: "Deal Redeemed!",
         description: "Please upload your receipt to earn 10 points.",
       });
       setShowReceiptUpload(true);
-    } else if (deal.dealType === 'online') {
+    } else if (currentDeal.dealType === 'online') {
       toast({
         title: "Deal Marked as Used",
         description: "You've earned 5 points for using this deal.",
@@ -105,11 +129,11 @@ const DealDetails: React.FC = () => {
 
   const handleShopNow = () => {
     // In a real app, this would redirect to the store with your affiliate link
-    window.open(deal.affiliateUrl || `https://${deal.platform?.toLowerCase()}.com`, '_blank');
+    window.open(currentDeal.affiliateUrl || `https://${currentDeal.platform?.toLowerCase()}.com`, '_blank');
     
     setTimeout(() => {
       toast({
-        title: "Shopping at " + deal.platform,
+        title: "Shopping at " + currentDeal.platform,
         description: "Remember to mark as used when you complete your purchase!",
       });
     }, 1000);
@@ -117,7 +141,7 @@ const DealDetails: React.FC = () => {
 
   const handleAffiliateRedirect = () => {
     // In a real app, this would redirect with your affiliate code auto-applied
-    window.open(deal.affiliateUrl, '_blank');
+    window.open(currentDeal.affiliateUrl, '_blank');
     setTimeout(() => {
       toast({
         title: "Discount Auto-Applied",
@@ -141,14 +165,14 @@ const DealDetails: React.FC = () => {
     <div className="min-h-screen bg-background pb-16">
       <Header transparent />
       
-      <DealHeader image={deal.image} title={deal.title} />
+      <DealHeader image={currentDeal.image} title={currentDeal.title} />
       
       <main className="px-4 -mt-16 relative z-10 max-w-3xl mx-auto">
-        <DealInfoCard deal={deal} />
+        <DealInfoCard deal={currentDeal} />
         
         <div className="bg-background rounded-xl shadow-soft p-5 border animate-scale-in">
           <DealDiscountSection 
-            deal={deal}
+            deal={currentDeal}
             isRedeemed={isRedeemed}
             showRedemptionCode={showRedemptionCode}
             handleShopNow={handleShopNow}
@@ -159,18 +183,21 @@ const DealDetails: React.FC = () => {
           />
           
           <DealDescription 
-            description={deal.description}
-            postedBy={deal.postedBy}
-            createdAt={deal.createdAt}
+            description={currentDeal.description}
+            postedBy={currentDeal.postedBy}
+            createdAt={currentDeal.createdAt}
           />
           
           <DealActionButtons 
-            verified={deal.verified}
-            flagged={deal.flagged}
+            verified={currentDeal.verified}
+            flagged={currentDeal.flagged}
             hasVerified={hasVerified}
             hasFlagged={hasFlagged}
             handleVerify={handleVerify}
             handleFlag={handleFlag}
+            verificationUrl={currentDeal.verificationUrl}
+            isVerifiedByBusiness={currentDeal.isVerifiedByBusiness}
+            dealType={currentDeal.dealType}
           />
         </div>
       </main>
@@ -178,7 +205,7 @@ const DealDetails: React.FC = () => {
       <DealRedemptionDialog 
         open={showQRCode}
         setOpen={setShowQRCode}
-        redemptionId={deal.redemptionId}
+        redemptionId={currentDeal.redemptionId}
         markAsRedeemed={markAsRedeemed}
       />
 

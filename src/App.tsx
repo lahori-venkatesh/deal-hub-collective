@@ -1,49 +1,41 @@
 
-import { Toaster } from "@/components/ui/toaster";
-import { Toaster as Sonner } from "@/components/ui/sonner";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import DealDetails from "./pages/DealDetails";
-import AddDeal from "./pages/AddDeal";
-import Profile from "./pages/Profile";
-import Notifications from "./pages/Notifications";
-import NotFound from "./pages/NotFound";
-import Explore from "./pages/Explore";
-import SavedDeals from "./pages/SavedDeals";
-import MyDeals from "./pages/MyDeals";
-import Onboarding from "./pages/Onboarding";
-import BusinessDashboard from "./pages/BusinessDashboard";
+import { Routes, Route } from "react-router-dom";
+import './App.css';
 
-const queryClient = new QueryClient();
+// Pages
+import Home from './pages/Home';
+import Index from './pages/Index';
+import Explore from './pages/Explore';
+import DealDetails from './pages/DealDetails';
+import Notifications from './pages/Notifications';
+import Profile from './pages/Profile';
+import MyDeals from './pages/MyDeals';
+import SavedDeals from './pages/SavedDeals';
+import BusinessDashboard from './pages/BusinessDashboard';
+import AddDeal from './pages/AddDeal';
+import Onboarding from './pages/Onboarding';
+import VerifyDeal from './pages/VerifyDeal';
+import NotFound from './pages/NotFound';
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/deal/:id" element={<DealDetails />} />
-          <Route path="/add-deal" element={<AddDeal />} />
-          <Route path="/profile" element={<Profile />} />
-          <Route path="/notifications" element={<Notifications />} />
-          <Route path="/explore" element={<Explore />} />
-          <Route path="/saved-deals" element={<SavedDeals />} />
-          <Route path="/my-deals" element={<MyDeals />} />
-          <Route path="/onboarding" element={<Onboarding />} />
-          <Route path="/business-dashboard" element={<BusinessDashboard />} />
-          {/* Future pages to be added */}
-          <Route path="/achievements" element={<Home />} />
-          <Route path="/rewards" element={<Home />} />
-          <Route path="/settings" element={<Home />} />
-          <Route path="*" element={<NotFound />} />
-        </Routes>
-      </BrowserRouter>
-    </TooltipProvider>
-  </QueryClientProvider>
-);
+function App() {
+  return (
+    <Routes>
+      <Route path="/" element={<Index />}>
+        <Route index element={<Home />} />
+        <Route path="explore" element={<Explore />} />
+        <Route path="notifications" element={<Notifications />} />
+        <Route path="profile" element={<Profile />} />
+      </Route>
+      <Route path="/deal/:id" element={<DealDetails />} />
+      <Route path="/my-deals" element={<MyDeals />} />
+      <Route path="/saved-deals" element={<SavedDeals />} />
+      <Route path="/business-dashboard" element={<BusinessDashboard />} />
+      <Route path="/add-deal" element={<AddDeal />} />
+      <Route path="/onboarding" element={<Onboarding />} />
+      <Route path="/verify/:token" element={<VerifyDeal />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
 
 export default App;
