@@ -3,7 +3,6 @@ import React from 'react';
 import { Tag, TrendingUp } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { SortOption } from '@/components/explore/types';
-import { dealCategories } from '@/utils/mockData';
 
 interface FilterPanelProps {
   showFilters: boolean;
@@ -24,6 +23,18 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
 }) => {
   if (!showFilters) return null;
 
+  // List of categories as simple strings
+  const categories = [
+    "Electronics",
+    "Fashion",
+    "Groceries",
+    "Dining",
+    "Travel",
+    "Entertainment",
+    "Beauty",
+    "Home"
+  ];
+
   return (
     <div className="mt-4 p-4 bg-background rounded-lg border shadow-md animate-scale-in">
       <div className="mb-4">
@@ -40,7 +51,7 @@ const FilterPanel: React.FC<FilterPanelProps> = ({
           >
             All Deals
           </Button>
-          {dealCategories.filter(c => c !== "All Deals").map((category) => (
+          {categories.map((category) => (
             <Button
               key={category}
               variant={selectedCategory === category ? "default" : "outline"}

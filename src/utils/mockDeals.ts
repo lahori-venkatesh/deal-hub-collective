@@ -1,14 +1,15 @@
+
 import { Deal } from './types';
 
 export const dealCategories = [
-  { name: 'Electronics', icon: '📱' },
-  { name: 'Fashion', icon: '👕' },
-  { name: 'Groceries', icon: '🛒' },
-  { name: 'Dining', icon: '🍔' },
-  { name: 'Travel', icon: '✈️' },
-  { name: 'Entertainment', icon: '🎬' },
-  { name: 'Beauty', icon: '💄' },
-  { name: 'Home', icon: '🏠' }
+  "Electronics",
+  "Fashion",
+  "Groceries",
+  "Dining",
+  "Travel",
+  "Entertainment",
+  "Beauty",
+  "Home"
 ];
 
 // Helper function to add days to a date
@@ -16,6 +17,15 @@ const addDays = (date: Date, days: number): Date => {
   const result = new Date(date);
   result.setDate(result.getDate() + days);
   return result;
+};
+
+// Default location for online deals
+const onlineLocation = {
+  address: "Online",
+  coordinates: {
+    lat: 0,
+    lng: 0
+  }
 };
 
 // Mock deals data
@@ -121,6 +131,7 @@ export const mockDeals: Deal[] = [
     dealType: "online",
     promoCode: "ELEC60",
     platform: "Amazon",
+    location: onlineLocation,
     expiresAt: addDays(new Date(), 30).toISOString(),
     createdAt: addDays(new Date(), -15).toISOString(),
     postedBy: {
@@ -173,6 +184,7 @@ export const mockDeals: Deal[] = [
     dealType: "online",
     promoCode: "SUMMER20",
     platform: "Myntra",
+    location: onlineLocation,
     expiresAt: addDays(new Date(), 25).toISOString(),
     createdAt: addDays(new Date(), -8).toISOString(),
     postedBy: {
@@ -225,6 +237,7 @@ export const mockDeals: Deal[] = [
     dealType: "online",
     promoCode: "WINTER70",
     platform: "WinterWear",
+    location: onlineLocation,
     expiresAt: addDays(new Date(), 35).toISOString(),
     createdAt: addDays(new Date(), -12).toISOString(),
     postedBy: {
@@ -249,6 +262,7 @@ export const mockDeals: Deal[] = [
     dealType: "online",
     promoCode: "SPRING40",
     platform: "StyleCraze",
+    location: onlineLocation,
     expiresAt: addDays(new Date(), 20).toISOString(),
     createdAt: addDays(new Date(), -6).toISOString(),
     postedBy: {
@@ -272,6 +286,7 @@ export const mockDeals: Deal[] = [
     category: "Electronics",
     dealType: "online",
     platform: "eShop",
+    location: onlineLocation,
     expiresAt: addDays(new Date(), 15).toISOString(),
     createdAt: addDays(new Date(), -4).toISOString(),
     postedBy: {
