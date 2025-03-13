@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import { QrCode, ShoppingCart, ExternalLink } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Deal } from '@/utils/types';
@@ -9,59 +9,54 @@ interface DealActionsProps {
   onRedeem?: (deal: Deal) => void;
 }
 
-const DealActions: React.FC<DealActionsProps> = ({
+// Button configurations for different deal types
+const dealTypeButtons = {
+  'in-store': {
+    icon: QrCode,
+    text: 'Show Code'
+  },
+  'online': {
+    icon: ShoppingCart,
+    text: 'Shop Now'
+  },
+  'affiliate': {
+    icon: ExternalLink,
+    text: 'Get Deal',
+    variant: 'default' as const
+  }
+};
+
+const DealActions: React.FC<DealActionsProps> = memo(({
   deal,
   onRedeem
 }) => {
+  if (!onRedeem) return null;
+
   const handleRedeem = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    if (onRedeem) {
-      onRedeem(deal);
-    }
+    onRedeem(deal);
   };
 
-  if (!onRedeem) return null;
+  const buttonConfig = dealTypeButtons[deal.dealType];
+  const ButtonIcon = buttonConfig.icon;
+  const variant = buttonConfig.variant || 'outline';
 
   return (
     <div className="flex space-x-2 mb-4">
-      {deal.dealType === 'in-store' && (
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="w-full flex items-center justify-center"
-          onClick={handleRedeem}
-        >
-          <QrCode size={14} className="mr-1" />
-          Show Code
-        </Button>
-      )}
-      
-      {deal.dealType === 'online' && (
-        <Button 
-          variant="outline" 
-          size="sm" 
-          className="w-full flex items-center justify-center"
-          onClick={handleRedeem}
-        >
-          <ShoppingCart size={14} className="mr-1" />
-          Shop Now
-        </Button>
-      )}
-      
-      {deal.dealType === 'affiliate' && (
-        <Button 
-          variant="default" 
-          size="sm" 
-          className="w-full flex items-center justify-center"
-          onClick={handleRedeem}
-        >
-          <ExternalLink size={14} className="mr-1" />
-          Get Deal
-        </Button>
-      )}
+      <Button 
+        variant={variant} 
+        size="sm" 
+        className="w-full flex items-center justify-center"
+        onClick={handleRedeem}
+      >
+        <ButtonIcon size={14} className="mr-1" />
+        {buttonConfig.text}
+      </Button>
     </div>
   );
-};
+});
+
+DealActions.displayName = 'DealActions';
 
 export default DealActions;

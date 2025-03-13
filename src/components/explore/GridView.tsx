@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import DealCard from '@/components/ui/DealCard';
 import { Deal } from '@/utils/types';
 
@@ -8,17 +8,20 @@ interface GridViewProps {
   onRedeem: (deal: Deal) => void;
 }
 
-const GridView: React.FC<GridViewProps> = ({ deals, onRedeem }) => {
+const EmptyState = () => (
+  <div className="flex flex-col items-center justify-center py-12">
+    <div className="text-6xl mb-4">🔍</div>
+    <h3 className="text-xl font-medium mb-2">No deals found</h3>
+    <p className="text-muted-foreground text-center max-w-md">
+      Try adjusting your search or filters to find what you're looking for.
+    </p>
+  </div>
+);
+
+// Use memo to prevent unnecessary re-renders when parent components change
+const GridView: React.FC<GridViewProps> = memo(({ deals, onRedeem }) => {
   if (deals.length === 0) {
-    return (
-      <div className="flex flex-col items-center justify-center py-12">
-        <div className="text-6xl mb-4">🔍</div>
-        <h3 className="text-xl font-medium mb-2">No deals found</h3>
-        <p className="text-muted-foreground text-center max-w-md">
-          Try adjusting your search or filters to find what you're looking for.
-        </p>
-      </div>
-    );
+    return <EmptyState />;
   }
 
   return (
@@ -34,6 +37,8 @@ const GridView: React.FC<GridViewProps> = ({ deals, onRedeem }) => {
       ))}
     </div>
   );
-};
+});
+
+GridView.displayName = 'GridView';
 
 export default GridView;

@@ -1,8 +1,7 @@
 
-import React from 'react';
-import { Clock, MapPin } from 'lucide-react';
+import React, { memo } from 'react';
+import { MapPin } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { formatTimeRemaining, getExpiryColor } from '@/utils/utils';
 import DealTypeIndicator from './DealTypeIndicator';
 
 interface DealHeaderProps {
@@ -17,15 +16,19 @@ interface DealHeaderProps {
   platform?: string;
 }
 
-const DealHeader: React.FC<DealHeaderProps> = ({
+const DealHeader: React.FC<DealHeaderProps> = memo(({
   title,
   store,
   category,
   dealType,
-  expiresAt,
   location,
   platform
 }) => {
+  const isInStore = dealType === 'in-store' && location;
+  const locationDisplay = isInStore 
+    ? location.address.split(',')[0]
+    : platform;
+
   return (
     <div className="p-4">
       <div className="flex items-center justify-between mb-1">
@@ -36,24 +39,27 @@ const DealHeader: React.FC<DealHeaderProps> = ({
       <div className="flex items-center text-sm text-muted-foreground mb-2">
         <span className="font-medium text-foreground">{store}</span>
         <span className="mx-1.5">•</span>
-        {dealType === 'in-store' && location ? (
-          <span className="text-xs flex items-center">
-            <MapPin size={12} className="mr-0.5" />
-            <span className="truncate max-w-[120px]">{location.address.split(',')[0]}</span>
-          </span>
-        ) : (
-          <span className="text-xs flex items-center">
-            {platform && (
+        
+        <span className="text-xs flex items-center">
+          {isInStore ? (
+            <>
+              <MapPin size={12} className="mr-0.5" />
+              <span className="truncate max-w-[120px]">{locationDisplay}</span>
+            </>
+          ) : (
+            platform && (
               <>
                 <DealTypeIndicator dealType={dealType} showLabel={false} iconSize={12} />
-                <span>{platform}</span>
+                <span>{locationDisplay}</span>
               </>
-            )}
-          </span>
-        )}
+            )
+          )}
+        </span>
       </div>
     </div>
   );
-};
+});
+
+DealHeader.displayName = 'DealHeader';
 
 export default DealHeader;

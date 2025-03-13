@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { memo } from 'react';
 import DealCard from '@/components/ui/DealCard';
 import { Deal } from '@/utils/types';
 
@@ -8,7 +8,7 @@ interface FeaturedDealsSectionProps {
   selectedCategory: string;
 }
 
-const FeaturedDealsSection: React.FC<FeaturedDealsSectionProps> = ({
+const FeaturedDealsSection: React.FC<FeaturedDealsSectionProps> = memo(({
   deals,
   selectedCategory
 }) => {
@@ -37,6 +37,8 @@ const FeaturedDealsSection: React.FC<FeaturedDealsSectionProps> = ({
       </div>
     </section>
   );
-};
+});
+
+FeaturedDealsSection.displayName = 'FeaturedDealsSection';
 
 export default FeaturedDealsSection;
