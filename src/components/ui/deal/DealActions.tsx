@@ -9,20 +9,26 @@ interface DealActionsProps {
   onRedeem?: (deal: Deal) => void;
 }
 
-// Button configurations for different deal types
-const dealTypeButtons = {
+// Button configurations for different deal types with proper type definitions
+const dealTypeButtons: Record<string, {
+  icon: React.ElementType;
+  text: string;
+  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link';
+}> = {
   'in-store': {
     icon: QrCode,
-    text: 'Show Code'
+    text: 'Show Code',
+    variant: 'outline'
   },
   'online': {
     icon: ShoppingCart,
-    text: 'Shop Now'
+    text: 'Shop Now',
+    variant: 'outline'
   },
   'affiliate': {
     icon: ExternalLink,
     text: 'Get Deal',
-    variant: 'default' as const
+    variant: 'default'
   }
 };
 
